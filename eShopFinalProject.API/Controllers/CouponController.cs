@@ -4,12 +4,14 @@ using eShopFinalProject.Utilities.Resources;
 using eShopFinalProject.Utilities.ViewModel.Categories;
 using eShopFinalProject.Utilities.ViewModel.Coupons;
 using eShopFinalProject.Utilities.ViewModel.Page;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace eShopFinalProject.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/coupon")]
     [ApiController]
     public class CouponController : ControllerBase
     {
@@ -40,6 +42,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Add([FromBody] CreateCouponRequest request)
         {
             var result = await _couponService.CreateAsync(request);
@@ -47,6 +50,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update([FromBody] UpdateCouponRequest request)
         {
             var result = await _couponService.UpdateAsync(request);
@@ -54,6 +58,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpDelete("delete")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete([FromBody] DeleteCouponRequest request)
         {
             var result = await _couponService.DeleteAsync(request);

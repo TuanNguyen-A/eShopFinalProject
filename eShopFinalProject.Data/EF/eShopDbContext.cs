@@ -21,6 +21,8 @@ namespace eShopFinalProject.Data.EF
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //base.OnModelCreating(builder);
+
             builder.ApplyConfiguration(new BlogConfiguration());
             builder.ApplyConfiguration(new BrandConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
@@ -31,7 +33,8 @@ namespace eShopFinalProject.Data.EF
             builder.ApplyConfiguration(new ProductInColorConfiguration());
             builder.ApplyConfiguration(new ProductInOrderConfiguration());
             builder.ApplyConfiguration(new ProductRatingConfiguration());
-
+            builder.ApplyConfiguration(new AppUserConfiguration());
+            builder.ApplyConfiguration(new AppRoleConfiguration());
 
             //Identity
             builder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");

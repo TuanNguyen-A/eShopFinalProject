@@ -5,6 +5,7 @@ using eShopFinalProject.Utilities.ViewModel.Categories;
 using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.ViewModel.Coupons;
 using eShopFinalProject.Utilities.ViewModel.Products;
+using eShopFinalProject.Utilities.ViewModel.Users;
 
 namespace eShopFinalProject.API
 {
@@ -32,6 +33,9 @@ namespace eShopFinalProject.API
             CreateMap<Product, ProductVM>()
                 .ForMember(dest => dest.Colors, 
                 source => source.MapFrom(source=> source.ProductInColors.Select(pic => pic.Color).ToList()));
+
+            CreateMap<CreateUserRequest, AppUser>();
+            CreateMap<AppUser, UserVM>();
 
         }
     }

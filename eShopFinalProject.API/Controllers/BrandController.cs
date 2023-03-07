@@ -4,12 +4,14 @@ using eShopFinalProject.Utilities.Resources;
 using eShopFinalProject.Utilities.ViewModel.Brands;
 using eShopFinalProject.Utilities.ViewModel.Categories;
 using eShopFinalProject.Utilities.ViewModel.Page;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace eShopFinalProject.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/brand")]
     [ApiController]
     public class BrandController : ControllerBase
     {
@@ -40,6 +42,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Add([FromBody] CreateBrandRequest request)
         {
             var result = await _brandService.CreateAsync(request);
@@ -47,6 +50,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update([FromBody] UpdateBrandRequest request)
         {
             var result = await _brandService.UpdateAsync(request);
@@ -54,6 +58,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpDelete("delete")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete([FromBody] DeleteBrandRequest request)
         {
             var result = await _brandService.DeleteAsync(request);

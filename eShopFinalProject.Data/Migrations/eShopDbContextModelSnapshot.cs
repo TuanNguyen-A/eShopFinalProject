@@ -43,24 +43,24 @@ namespace eShopFinalProject.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("AppRoles", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "0dc0e3fd-40b1-4c10-bfbd-fedf1855cbf5",
+                            ConcurrencyStamp = "aa8debeb-7e26-44dd-a1a4-26ef5577a224",
                             Description = "Administrator role",
                             Name = "admin",
-                            NormalizedName = "admin"
+                            NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"),
-                            ConcurrencyStamp = "1cc771f8-f105-42af-9696-954083cf5900",
-                            Description = "Administrator role",
-                            Name = "admin",
-                            NormalizedName = "admin"
+                            ConcurrencyStamp = "673130cf-1a7e-4018-a30d-2f4835111f97",
+                            Description = "User role",
+                            Name = "user",
+                            NormalizedName = "USER"
                         });
                 });
 
@@ -84,6 +84,7 @@ namespace eShopFinalProject.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("EmailConfirmed")
@@ -91,14 +92,16 @@ namespace eShopFinalProject.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("IsBlock")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -116,6 +119,7 @@ namespace eShopFinalProject.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -135,7 +139,7 @@ namespace eShopFinalProject.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("AppUsers", (string)null);
 
                     b.HasData(
                         new
@@ -143,7 +147,7 @@ namespace eShopFinalProject.Data.Migrations
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
                             Address = "Test Address",
-                            ConcurrencyStamp = "52577c88-fe42-42f7-8e9c-2a21811d84f1",
+                            ConcurrencyStamp = "b0672dc1-b8bc-4ef4-810f-30bd15d63cd3",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "tuan3032001@gmail.com",
                             EmailConfirmed = true,
@@ -153,7 +157,8 @@ namespace eShopFinalProject.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "tuan3032001@gmail.com",
                             NormalizedUserName = "User 1",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIEFITLbQAJk973b6qE88mNppMFOQiAJIdNyBX5AtYomtUKvTp/du5eMWJ5Rn31tZQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHamGlNQn+VVzpmEwyS01cbcR9We7nBfjPrQidUi17vMcsWhBMUzbVkHxzHyu/AxSg==",
+                            PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
