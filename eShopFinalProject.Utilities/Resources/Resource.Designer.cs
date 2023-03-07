@@ -259,11 +259,38 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string Resource_User {
+            get {
+                return ResourceManager.GetString("Resource_User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update {0} success.
         /// </summary>
         public static string Update_Succes_Template {
             get {
                 return ResourceManager.GetString("Update_Succes_Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot change email.
+        /// </summary>
+        public static string User_Cannot_Change_Email {
+            get {
+                return ResourceManager.GetString("User_Cannot_Change_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email is already in use.
+        /// </summary>
+        public static string UserEmail_Existed {
+            get {
+                return ResourceManager.GetString("UserEmail_Existed", resourceCulture);
             }
         }
     }

@@ -113,7 +113,6 @@ namespace eShopFinalProject.Services.Colors
             {
                 throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Update, Resource.Resource_Color));
             }
-            throw new NotImplementedException();
         }
 
         public async Task<ResultWrapperDto<Color>> DeleteAsync(DeleteColorRequest request)

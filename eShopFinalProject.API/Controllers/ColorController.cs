@@ -3,14 +3,14 @@ using eShopFinalProject.Utilities.Common;
 using eShopFinalProject.Utilities.Resources;
 using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.ViewModel.Page;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace eShopFinalProject.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/color")]
     [ApiController]
-    
     public class ColorController : ControllerBase
     {
         private readonly IColorService _colorService;
@@ -41,6 +41,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Add([FromBody] CreateColorRequest req)
         {
             var result = await _colorService.CreateAsync(req);
@@ -48,6 +49,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update([FromBody] UpdateColorRequest request)
         {
             var result = await _colorService.UpdateAsync(request);
@@ -55,6 +57,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpDelete("delete")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete([FromBody] DeleteColorRequest request)
         {
             var result = await _colorService.DeleteAsync(request);

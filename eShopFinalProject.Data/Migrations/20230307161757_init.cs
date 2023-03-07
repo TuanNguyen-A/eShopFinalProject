@@ -25,6 +25,21 @@ namespace eShopFinalProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AppRoles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AppUserClaims",
                 columns: table => new
                 {
@@ -63,6 +78,37 @@ namespace eShopFinalProject.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AppUserRoles", x => new { x.UserId, x.RoleId });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsBlock = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -134,49 +180,52 @@ namespace eShopFinalProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    orderStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Blogs",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsBlock = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumView = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Blogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blogs_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Blogs_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,55 +262,6 @@ namespace eShopFinalProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Blogs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumView = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Blogs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Blogs_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Blogs_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    orderStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductInColors",
                 columns: table => new
                 {
@@ -281,32 +281,6 @@ namespace eShopFinalProject.Data.Migrations
                         name: "FK_ProductInColors_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductRatings",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Star = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductRatings", x => new { x.UserId, x.ProductId });
-                    table.ForeignKey(
-                        name: "FK_ProductRatings_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductRatings_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -335,10 +309,50 @@ namespace eShopFinalProject.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProductRatings",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Star = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductRatings", x => new { x.UserId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_ProductRatings_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductRatings_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AppRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "673130cf-1a7e-4018-a30d-2f4835111f97", "User role", "user", "USER" },
+                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "aa8debeb-7e26-44dd-a1a4-26ef5577a224", "Administrator role", "admin", "ADMIN" }
+                });
+
             migrationBuilder.InsertData(
                 table: "AppUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), new Guid("69bd714f-9576-45ba-b5b7-f00649be00de") });
+
+            migrationBuilder.InsertData(
+                table: "AppUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "FirstName", "IsBlock", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedDate", "UserName" },
+                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "b0672dc1-b8bc-4ef4-810f-30bd15d63cd3", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tuan3032001@gmail.com", true, "Tuan", false, "Nguyen", false, null, "tuan3032001@gmail.com", "User 1", "AQAAAAEAACcQAAAAEHamGlNQn+VVzpmEwyS01cbcR9We7nBfjPrQidUi17vMcsWhBMUzbVkHxzHyu/AxSg==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User 1" });
 
             migrationBuilder.InsertData(
                 table: "Brands",
@@ -375,20 +389,6 @@ namespace eShopFinalProject.Data.Migrations
                     { 1, 10, new DateTime(2023, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "BLACKFRIDAY" },
                     { 2, 12, new DateTime(2023, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "SUMMER" }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Roles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "1cc771f8-f105-42af-9696-954083cf5900", "Administrator role", "admin", "admin" },
-                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "0dc0e3fd-40b1-4c10-bfbd-fedf1855cbf5", "Administrator role", "admin", "admin" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "FirstName", "IsBlock", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedDate", "UserName" },
-                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "52577c88-fe42-42f7-8e9c-2a21811d84f1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tuan3032001@gmail.com", true, "Tuan", false, "Nguyen", false, null, "tuan3032001@gmail.com", "User 1", "AQAAAAEAACcQAAAAEIEFITLbQAJk973b6qE88mNppMFOQiAJIdNyBX5AtYomtUKvTp/du5eMWJ5Rn31tZQ==", null, false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User 1" });
 
             migrationBuilder.InsertData(
                 table: "Blogs",
@@ -509,6 +509,9 @@ namespace eShopFinalProject.Data.Migrations
                 name: "AppRoleClaims");
 
             migrationBuilder.DropTable(
+                name: "AppRoles");
+
+            migrationBuilder.DropTable(
                 name: "AppUserClaims");
 
             migrationBuilder.DropTable(
@@ -536,9 +539,6 @@ namespace eShopFinalProject.Data.Migrations
                 name: "ProductRatings");
 
             migrationBuilder.DropTable(
-                name: "Roles");
-
-            migrationBuilder.DropTable(
                 name: "Colors");
 
             migrationBuilder.DropTable(
@@ -548,7 +548,7 @@ namespace eShopFinalProject.Data.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "AppUsers");
 
             migrationBuilder.DropTable(
                 name: "Brands");

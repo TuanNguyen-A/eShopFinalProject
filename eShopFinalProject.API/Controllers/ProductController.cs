@@ -3,12 +3,14 @@ using eShopFinalProject.Services.Products;
 using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.ViewModel.Page;
 using eShopFinalProject.Utilities.ViewModel.Products;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace eShopFinalProject.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/product")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -40,6 +42,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Add([FromBody] CreateProductRequest req)
         {
             var result = await _productService.CreateAsync(req);
@@ -47,6 +50,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update([FromBody] UpdateProductRequest request)
         {
             var result = await _productService.UpdateAsync(request);
@@ -54,6 +58,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpDelete("delete")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete([FromBody] DeleteProductRequest request)
         {
             var result = await _productService.DeleteAsync(request);

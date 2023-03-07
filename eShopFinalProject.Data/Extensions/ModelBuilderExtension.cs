@@ -25,15 +25,15 @@ namespace eShopFinalProject.Data.Extensions
             {
                 Id = roleAdminId,
                 Name = "admin",
-                NormalizedName = "admin",
+                NormalizedName = "ADMIN",
                 Description = "Administrator role"
             },
                 new AppRole
                 {
                     Id = roleUserId,
-                    Name = "admin",
-                    NormalizedName = "admin",
-                    Description = "Administrator role"
+                    Name = "user",
+                    NormalizedName = "USER",
+                    Description = "User role"
                 }
             );
 
@@ -51,6 +51,7 @@ namespace eShopFinalProject.Data.Extensions
                 SecurityStamp = string.Empty,
                 FirstName = "Tuan",
                 LastName = "Nguyen",
+                PhoneNumber = "123456"
             });
 
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
