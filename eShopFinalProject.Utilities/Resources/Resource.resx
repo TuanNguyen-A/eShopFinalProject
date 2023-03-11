@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Account_Not_Exist" xml:space="preserve">
+    <value>Account does not exist</value>
+  </data>
   <data name="ActionFail_Template" xml:space="preserve">
     <value>{0} {1} Is Failed</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="GetFailed_Template" xml:space="preserve">
     <value>Getting {0} Is Failed</value>
+  </data>
+  <data name="Incorrect_Password" xml:space="preserve">
+    <value>Your password is incorrect</value>
   </data>
   <data name="NotFound_Template" xml:space="preserve">
     <value>{0} is not found</value>

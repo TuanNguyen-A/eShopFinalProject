@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace eShopFinalProject.Data.Configurations
 {
@@ -15,7 +16,8 @@ namespace eShopFinalProject.Data.Configurations
         {
             builder.ToTable("Colors");
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Title).IsRequired();
+            builder.Property(x => x.Title).IsRequired()
+                .HasConversion(new ValueConverter<string, string>(v => v.ToLower(), v => v.ToLower()));
             builder.HasIndex(x => x.Title).IsUnique();
 
         }

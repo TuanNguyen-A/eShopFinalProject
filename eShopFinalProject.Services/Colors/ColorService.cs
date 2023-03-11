@@ -47,6 +47,12 @@ namespace eShopFinalProject.Services.Colors
         {
             try {
                 var listItem = await _unitOfWork.ColorRepository.AllAsync();
+
+                if (!string.IsNullOrEmpty(req.Search))
+                {
+                    listItem = listItem.Where(x => x.Title.Contains(req.Search.ToLower())).ToList();
+                }
+
                 var listPagingItem = listItem
                     .Skip((req.PageIndex-1)* req.PageSize)
                     .Take(req.PageSize)

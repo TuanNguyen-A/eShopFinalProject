@@ -98,12 +98,12 @@ namespace eShopFinalProject.Services.Users
         public async Task<ResultWrapperDto<AuthenticationResponse>> Authenticate(LoginRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
-            if (user == null) return new ResultWrapperDto<AuthenticationResponse>(401, "Tài khoản không tồn tại");
+            if (user == null) return new ResultWrapperDto<AuthenticationResponse>(401, Resource.Account_Not_Exist);
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
             if (!result.Succeeded)
             {
-                return new ResultWrapperDto<AuthenticationResponse>(401, "Đăng nhập không đúng");
+                return new ResultWrapperDto<AuthenticationResponse>(401, Resource.Incorrect_Password);
             }
 
             var token = await _jwtService.CreateTokenAsync(user);
@@ -136,6 +136,12 @@ namespace eShopFinalProject.Services.Users
             try
             {
                 var listItem = await _userManager.Users.ToListAsync();
+
+                if (!string.IsNullOrEmpty(req.Search))
+                {
+                    listItem = listItem.Where(x => x.Email.Contains(req.Search) || x.FirstName.Contains(req.Search) || x.LastName.Contains(req.Search)).ToList();
+                }
+
                 var listPagingItem = listItem
                     .Skip((req.PageIndex - 1) * req.PageSize)
                     .Take(req.PageSize)
