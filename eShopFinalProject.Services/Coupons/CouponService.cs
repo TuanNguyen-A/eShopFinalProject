@@ -70,6 +70,12 @@ namespace eShopFinalProject.Services.Coupons
         {
             try {
                 var listItem = await _unitOfWork.CouponRepository.AllAsync();
+
+                if (!string.IsNullOrEmpty(req.Search))
+                {
+                    listItem = listItem.Where(x => x.Name.Contains(req.Search.ToUpper())).ToList();
+                }
+
                 var listPagingItem = listItem
                     .Skip((req.PageIndex - 1) * req.PageSize)
                     .Take(req.PageSize)

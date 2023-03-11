@@ -61,6 +61,15 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account does not exist.
+        /// </summary>
+        public static string Account_Not_Exist {
+            get {
+                return ResourceManager.GetString("Account_Not_Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating.
         /// </summary>
         public static string Action_Create {
@@ -165,6 +174,15 @@ namespace eShopFinalProject.Utilities.Resources {
         public static string GetFailed_Template {
             get {
                 return ResourceManager.GetString("GetFailed_Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password is incorrect.
+        /// </summary>
+        public static string Incorrect_Password {
+            get {
+                return ResourceManager.GetString("Incorrect_Password", resourceCulture);
             }
         }
         

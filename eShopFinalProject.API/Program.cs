@@ -96,6 +96,7 @@ if (app.Environment.IsDevelopment())
 }
 //app.UseMiddleware<EShopExceptionFilterAttribute>();
 
+app.UseCors("corsapp");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

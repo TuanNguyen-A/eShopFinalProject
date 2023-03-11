@@ -73,10 +73,17 @@ namespace eShopFinalProject.Services.Brands
         {
             try {
                 var listItem = await _unitOfWork.BrandRepository.AllAsync();
+
+                if (!string.IsNullOrEmpty(req.Search))
+                {
+                    listItem = listItem.Where(x=>x.Title.Contains(req.Search.ToLower())).ToList();
+                }
+
                 var listPagingItem = listItem
                     .Skip((req.PageIndex - 1) * req.PageSize)
                     .Take(req.PageSize)
                     .ToList();
+
                 var listVMItem = _mapper.Map<List<Brand>,List<BrandVM>>(listPagingItem);
 
                 var result = new PagingResult<BrandVM>
