@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eShopFinalProject.Data.Entities;
+using eShopFinalProject.Data.Infrastructure;
 using eShopFinalProject.Data.Infrastructure.Interface;
 using eShopFinalProject.Utilities.Common;
 using eShopFinalProject.Utilities.Resources;
@@ -18,27 +19,30 @@ namespace eShopFinalProject.Services.Categories
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ICategoryRepository _categoryRepository;
 
         public CategoryService(
             IUnitOfWork unitOfWork,
+            ICategoryRepository categoryRepository,
             IMapper mapper
             )
         {
             _unitOfWork = unitOfWork;
+            _categoryRepository = categoryRepository;
             _mapper = mapper;
         }
 
         public async Task<ResultWrapperDto<Category>> CreateAsync(CreateCategoryRequest request)
         {
             try {
-                var existedEntity = await _unitOfWork.CategoryRepository.FindAsync(x => x.Title == request.Title);
+                var existedEntity = await _categoryRepository.FindAsync(x => x.Title == request.Title);
                 if (existedEntity.Any())
                 {
                     return new ResultWrapperDto<Category>(400, Resource.Category_Existed);
                 }
 
                 Category entity = _mapper.Map<Category>(request);
-                var result = await _unitOfWork.CategoryRepository.AddAsync(entity);
+                var result = await _categoryRepository.AddAsync(entity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Category>(201, String.Format(Resource.Create_Succes_Template, Resource.Resource_Category));
             }
@@ -51,13 +55,13 @@ namespace eShopFinalProject.Services.Categories
         public async Task<ResultWrapperDto<Category>> DeleteAsync(DeleteCategoryRequest request)
         {
             try {
-                var entity = await _unitOfWork.CategoryRepository.GetAsync(request.Id);
+                var entity = await _categoryRepository.GetAsync(request.Id);
                 if (entity == null)
                 {
                     return new ResultWrapperDto<Category>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Category));
                 }
 
-                var result = _unitOfWork.CategoryRepository.Delete(entity);
+                var result = _categoryRepository.Delete(entity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Category>(200, String.Format(Resource.Delete_Succes_Template, Resource.Resource_Category));
             }
@@ -71,7 +75,7 @@ namespace eShopFinalProject.Services.Categories
         {
             try
             {
-                var listItem = await _unitOfWork.CategoryRepository.AllAsync();
+                var listItem = await _categoryRepository.AllAsync();
 
                 if (!string.IsNullOrEmpty(req.Search))
                 {
@@ -105,7 +109,7 @@ namespace eShopFinalProject.Services.Categories
         public async Task<ResultWrapperDto<CategoryVM>> GetAsync(int id)
         {
             try {
-                var foundEntity = await _unitOfWork.CategoryRepository.GetAsync(id);
+                var foundEntity = await _categoryRepository.GetAsync(id);
                 if (foundEntity == null)
                 {
                     return new ResultWrapperDto<CategoryVM>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Category));
@@ -123,20 +127,20 @@ namespace eShopFinalProject.Services.Categories
         public async Task<ResultWrapperDto<Category>> UpdateAsync(UpdateCategoryRequest request)
         {
             try {
-                var foundEntity = await _unitOfWork.CategoryRepository.GetAsync(request.Id);
+                var foundEntity = await _categoryRepository.GetAsync(request.Id);
                 if (foundEntity == null)
                 {
                     return new ResultWrapperDto<Category>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Category));
                 }
 
-                var existedEntity = await _unitOfWork.CategoryRepository.FindAsync(x => x.Title == request.Title);
+                var existedEntity = await _categoryRepository.FindAsync(x => x.Title == request.Title);
                 if (existedEntity.Any())
                 {
                     return new ResultWrapperDto<Category>(400, Resource.Category_Existed);
                 }
 
                 foundEntity.Title = request.Title;
-                var result = _unitOfWork.CategoryRepository.Update(foundEntity);
+                var result = _categoryRepository.Update(foundEntity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Category>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_Category));
             }

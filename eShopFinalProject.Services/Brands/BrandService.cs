@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eShopFinalProject.Data.Entities;
+using eShopFinalProject.Data.Infrastructure;
 using eShopFinalProject.Data.Infrastructure.Interface;
 using eShopFinalProject.Utilities.Common;
 using eShopFinalProject.Utilities.Resources;
@@ -18,14 +19,17 @@ namespace eShopFinalProject.Services.Brands
     public class BrandService : IBrandService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IBrandRepository _brandRepository;
         private readonly IMapper _mapper;
 
         public BrandService(
             IUnitOfWork unitOfWork,
+            IBrandRepository brandRepository,
             IMapper mapper
             )
         {
             _unitOfWork = unitOfWork;
+            _brandRepository = brandRepository;
             _mapper = mapper;
         }
 
@@ -33,14 +37,14 @@ namespace eShopFinalProject.Services.Brands
         {
             try
             {
-                var existedEntity = await _unitOfWork.BrandRepository.FindAsync(x => x.Title == request.Title);
+                var existedEntity = await _brandRepository.FindAsync(x => x.Title == request.Title);
                 if (existedEntity.Any())
                 {
                     return new ResultWrapperDto<Brand>(400, Resource.Brand_Existed);
                 }
 
                 Brand entity = _mapper.Map<Brand>(request);
-                var result = await _unitOfWork.BrandRepository.AddAsync(entity);
+                var result = await _brandRepository.AddAsync(entity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Brand>(201, String.Format(Resource.Create_Succes_Template, Resource.Resource_Brand));
             }
@@ -54,12 +58,12 @@ namespace eShopFinalProject.Services.Brands
         {
             try
             {
-                var entity = await _unitOfWork.BrandRepository.GetAsync(request.Id);
+                var entity = await _brandRepository.GetAsync(request.Id);
                 if (entity == null)
                 {
                     return new ResultWrapperDto<Brand>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Brand));
                 }
-                _unitOfWork.BrandRepository.Delete(entity);
+                _brandRepository.Delete(entity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Brand>(200, String.Format(Resource.Delete_Succes_Template, Resource.Resource_Brand));
             }
@@ -72,7 +76,7 @@ namespace eShopFinalProject.Services.Brands
         public async Task<ResultWrapperDto<PagingResult<BrandVM>>> GetAllAsync(PagingGetAllRequest req)
         {
             try {
-                var listItem = await _unitOfWork.BrandRepository.AllAsync();
+                var listItem = await _brandRepository.AllAsync();
 
                 if (!string.IsNullOrEmpty(req.Search))
                 {
@@ -105,7 +109,7 @@ namespace eShopFinalProject.Services.Brands
         public async Task<ResultWrapperDto<BrandVM>> GetAsync(int id)
         {
             try {
-                var entity = await _unitOfWork.BrandRepository.GetAsync(id);
+                var entity = await _brandRepository.GetAsync(id);
                 if (entity == null)
                 {
                     return new ResultWrapperDto<BrandVM>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Brand));
@@ -123,20 +127,20 @@ namespace eShopFinalProject.Services.Brands
         {
             try
             {
-                var foundEntity = await _unitOfWork.BrandRepository.GetAsync(request.Id);
+                var foundEntity = await _brandRepository.GetAsync(request.Id);
                 if (foundEntity == null)
                 {
                     return new ResultWrapperDto<Brand>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Brand));
                 }
 
-                var existedEntity = await _unitOfWork.BrandRepository.FindAsync(x => x.Title == request.Title);
+                var existedEntity = await _brandRepository.FindAsync(x => x.Title == request.Title);
                 if (existedEntity.Any())
                 {
                     return new ResultWrapperDto<Brand>(400, Resource.Brand_Existed);
                 }
 
                 foundEntity.Title = request.Title;
-                var result = _unitOfWork.BrandRepository.Update(foundEntity);
+                var result = _brandRepository.Update(foundEntity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Brand>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_Brand));
             }
@@ -144,7 +148,6 @@ namespace eShopFinalProject.Services.Brands
             {
                 throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Update, Resource.Resource_Brand));
             }
-            throw new NotImplementedException();
         }
     }
 }

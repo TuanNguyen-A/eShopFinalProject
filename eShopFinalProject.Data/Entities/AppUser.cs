@@ -17,5 +17,6 @@ namespace eShopFinalProject.Data.Entities
         public DateTime UpdatedDate { get; set; }
         public virtual List<ProductRating> ProductRatings { get; set; }
         public virtual List<Blog> Blogs { get; set; }
+
     }
 }

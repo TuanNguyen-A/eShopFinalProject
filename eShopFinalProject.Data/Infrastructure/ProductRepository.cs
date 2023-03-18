@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eShopFinalProject.Data.EF;
 using eShopFinalProject.Data.Entities;
+using eShopFinalProject.Data.Infrastructure.Interface;
 using eShopFinalProject.Utilities.ViewModel.Products;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +12,10 @@ using System.Threading.Tasks;
 
 namespace eShopFinalProject.Data.Infrastructure
 {
-    public class ProductRepository : BaseRepository<Product>
+    public interface IProductRepository : IBaseRepository<Product>
+    {
+    }
+    public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
         public ProductRepository(eShopDbContext context) : base(context)
         {

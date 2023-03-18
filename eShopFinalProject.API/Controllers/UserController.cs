@@ -7,6 +7,7 @@ using eShopFinalProject.Services.Users;
 using eShopFinalProject.Utilities.ViewModel.Brands;
 using Microsoft.AspNetCore.Authorization;
 using eShopFinalProject.Utilities.ViewModel.Page;
+using eShopFinalProject.Utilities.ViewModel.Colors;
 
 namespace eShopFinalProject.API.Controllers
 {
@@ -73,6 +74,22 @@ namespace eShopFinalProject.API.Controllers
             return result.StatusCode != 200 ?
                 StatusCode(result.StatusCode, result.Message) :
                 Ok(result.Dto);
+        }
+
+        [HttpPut("update")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Update([FromBody] UpdateUserRequest request)
+        {
+            var result = await _userService.UpdateAsync(request);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [HttpDelete("delete")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Delete([FromBody] DeleteUserRequest request)
+        {
+            var result = await _userService.DeleteAsync(request);
+            return StatusCode(result.StatusCode, result.Message);
         }
     }
 }

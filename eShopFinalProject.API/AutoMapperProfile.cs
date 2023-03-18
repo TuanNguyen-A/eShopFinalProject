@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eShopFinalProject.Data.Entities;
+using eShopFinalProject.Utilities.ViewModel.Blogs;
 using eShopFinalProject.Utilities.ViewModel.Brands;
 using eShopFinalProject.Utilities.ViewModel.Categories;
 using eShopFinalProject.Utilities.ViewModel.Colors;
@@ -28,6 +29,9 @@ namespace eShopFinalProject.API
             CreateMap<CreateCouponRequest, Coupon>();
             CreateMap<UpdateCouponRequest, Coupon>();
             CreateMap<Coupon, CouponVM>();
+
+            CreateMap<CreateBlogRequest, Blog>();
+            CreateMap<Blog, BlogVM>();
 
             CreateMap<CreateProductRequest, Product>();
             CreateMap<Product, ProductVM>()

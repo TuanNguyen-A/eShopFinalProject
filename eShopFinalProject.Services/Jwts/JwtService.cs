@@ -16,7 +16,7 @@ namespace eShopFinalProject.Services.JwtService
 {
     public class JwtService : IJwtService
     {
-        private const int EXPIRATION_MINUTES = 1;
+        private const int EXPIRATION_MINUTES = 720;
 
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
@@ -58,14 +58,14 @@ namespace eShopFinalProject.Services.JwtService
 
         private async Task<Claim[]> CreateClaims(AppUser user)
         {
-            var role = await _userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
 
             return new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, string.Join(";",role))
+                new Claim(ClaimTypes.Role, string.Join(";",roles))
             };
         }
 

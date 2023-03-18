@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eShopFinalProject.Data.Entities;
+using eShopFinalProject.Data.Infrastructure;
 using eShopFinalProject.Data.Infrastructure.Interface;
 using eShopFinalProject.Services.Jwts;
 using eShopFinalProject.Utilities.Common;
@@ -22,11 +23,13 @@ namespace eShopFinalProject.Services.Users
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
+        private readonly IAppUserRepository _appUserRepository;
 
         public UserService(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             RoleManager<AppRole> roleManager,
+            IAppUserRepository appUserRepository,
             IConfiguration config,
             IUnitOfWork unitOfWork,
             IMapper mapper,
@@ -35,6 +38,7 @@ namespace eShopFinalProject.Services.Users
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _appUserRepository = appUserRepository;
             _config = config;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -135,7 +139,7 @@ namespace eShopFinalProject.Services.Users
         {
             try
             {
-                var listItem = await _userManager.Users.ToListAsync();
+                var listItem = _appUserRepository.AllUserVMAsync();
 
                 if (!string.IsNullOrEmpty(req.Search))
                 {
@@ -147,16 +151,15 @@ namespace eShopFinalProject.Services.Users
                     .Take(req.PageSize)
                     .ToList();
 
-                var listVMItem = _mapper.Map<List<AppUser>, List<UserVM>>(listPagingItem);
-
                 var result = new PagingResult<UserVM>
                 {
                     pageIndex = req.PageIndex,
                     pageSize = req.PageSize,
                     totalPage = (int)Math.Ceiling((double)listItem.Count / req.PageSize),
                     totalItem = listItem.Count,
-                    items = listVMItem
+                    items = listPagingItem
                 };
+
                 return new ResultWrapperDto<PagingResult<UserVM>>(result);
             }
             catch (Exception)
@@ -174,7 +177,10 @@ namespace eShopFinalProject.Services.Users
                 {
                     return new ResultWrapperDto<UserVM>(404, String.Format(Resource.NotFound_Template, Resource.Resource_User));
                 }
+                var roles = await _userManager.GetRolesAsync(entity);
+
                 var result = _mapper.Map<UserVM>(entity);
+                result.Role = roles[0];
                 return new ResultWrapperDto<UserVM>(result);
             }
             catch (Exception)
@@ -193,7 +199,7 @@ namespace eShopFinalProject.Services.Users
                     return new ResultWrapperDto<AppUser>(404, String.Format(Resource.NotFound_Template, Resource.Resource_User));
                 }
 
-                if (foundEntity.Email == request.Email)
+                if (foundEntity.Email != request.Email)
                 {
                     return new ResultWrapperDto<AppUser>(400, String.Format(Resource.User_Cannot_Change_Email));
                 }
