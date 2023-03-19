@@ -180,6 +180,9 @@
   <data name="Resource_Coupon" xml:space="preserve">
     <value>Coupon</value>
   </data>
+  <data name="Resource_Enq" xml:space="preserve">
+    <value>Enquiry</value>
+  </data>
   <data name="Resource_Order" xml:space="preserve">
     <value>Order</value>
   </data>

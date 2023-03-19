@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace eShopFinalProject.Data.Infrastructure
 {
-    public interface IProductRatingRepository : IBaseRepository<ProductRating>
+    public interface IEnqRepository : IBaseRepository<Enq>
     {
     }
-    public class ProductRatingRepository : BaseRepository<ProductRating>, IProductRatingRepository
+
+    public class EnqRepository : BaseRepository<Enq>, IEnqRepository
     {
-        public ProductRatingRepository(eShopDbContext context) : base(context) { }
+        public EnqRepository(eShopDbContext context) : base(context) { }
     }
 }

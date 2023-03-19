@@ -250,6 +250,15 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enquiry.
+        /// </summary>
+        public static string Resource_Enq {
+            get {
+                return ResourceManager.GetString("Resource_Enq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order.
         /// </summary>
         public static string Resource_Order {

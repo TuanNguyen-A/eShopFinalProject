@@ -20,6 +20,8 @@ using Microsoft.IdentityModel.Tokens;
 using eShopFinalProject.Services.Jwts;
 using eShopFinalProject.Services.JwtService;
 using System.Text;
+using eShopFinalProject.Services.Blogs;
+using eShopFinalProject.Services.Enqs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,7 +84,23 @@ builder.Services.AddTransient<IColorService, ColorService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IBlogService, BlogService>();
+builder.Services.AddTransient<IEnqService, EnqService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
+
+builder.Services.AddTransient<IAppRoleRepository, AppRoleRepository>();
+builder.Services.AddTransient<IAppUserRepository, AppUserRepository>();
+builder.Services.AddTransient<IBlogRepository, BlogRepository>();
+builder.Services.AddTransient<IBrandRepository, BrandRepository>();
+builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<IColorRepository, ColorRepository>();
+builder.Services.AddTransient<ICouponRepository, CouponRepository>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<IProductInColorRepository, ProductInColorRepository>();
+builder.Services.AddTransient<IProductInOrderRepository, ProductInOrderRepository>();
+builder.Services.AddTransient<IProductRatingRepository, ProductRatingRepository>();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IEnqRepository, EnqRepository>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eShopFinalProject.Data.Entities;
+using eShopFinalProject.Data.Infrastructure;
 using eShopFinalProject.Data.Infrastructure.Interface;
 using eShopFinalProject.Utilities.Common;
 using eShopFinalProject.Utilities.Resources;
@@ -18,12 +19,28 @@ namespace eShopFinalProject.Services.Products
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IProductRepository _productRepository;
+        private readonly IBrandRepository _brandRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IColorRepository _colorRepository;
+        private readonly IProductInColorRepository _productInColorRepository;
 
         public ProductService(
             IUnitOfWork unitOfWork,
+            IProductRepository productRepository,
+            IBrandRepository brandRepository,
+            ICategoryRepository categoryRepository,
+            IColorRepository colorRepository,
+            IProductInColorRepository productInColorRepository,
             IMapper mapper
             )
         {
+            _brandRepository = brandRepository;
+            _categoryRepository = categoryRepository;
+            _colorRepository = colorRepository;
+            _productRepository = productRepository;
+            _productInColorRepository = productInColorRepository;
+
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -32,7 +49,7 @@ namespace eShopFinalProject.Services.Products
         {
             try
             {
-                var listItem = await _unitOfWork.ProductRepository.AllAsync();
+                var listItem = await _productRepository.AllAsync();
 
                 if (!string.IsNullOrEmpty(req.Search))
                 {
@@ -68,7 +85,7 @@ namespace eShopFinalProject.Services.Products
         {
             try
             {
-                var entity = await _unitOfWork.ProductRepository.GetAsync(id);
+                var entity = await _productRepository.GetAsync(id);
                 if (entity == null)
                 {
                     return new ResultWrapperDto<ProductVM>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Product));
@@ -86,32 +103,32 @@ namespace eShopFinalProject.Services.Products
         {
             try
             {
-                var existedEntity = await _unitOfWork.ProductRepository.FindAsync(x => x.Title == request.Title);
+                var existedEntity = await _productRepository.FindAsync(x => x.Title == request.Title);
                 if (existedEntity.Any())
                 {
                     return new ResultWrapperDto<Product>(400, Resource.Product_Existed);
                 }
 
-                var color = await _unitOfWork.ColorRepository.GetAsync(request.ColorId);
+                var color = await _colorRepository.GetAsync(request.ColorId);
                 if (color == null)
                 {
                     return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Color));
                 }
 
-                var brand = await _unitOfWork.BrandRepository.GetAsync(request.BrandId);
+                var brand = await _brandRepository.GetAsync(request.BrandId);
                 if (brand == null)
                 {
                     return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Brand));
                 }
 
-                var category = await _unitOfWork.CategoryRepository.GetAsync(request.CategoryId);
+                var category = await _categoryRepository.GetAsync(request.CategoryId);
                 if (category == null)
                 {
                     return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Category));
                 }
 
                 Product entity = _mapper.Map<Product>(request);
-                await _unitOfWork.ProductRepository.AddAsync(entity);
+                await _productRepository.AddAsync(entity);
 
 
                 ProductInColor pic = new ProductInColor()
@@ -120,7 +137,7 @@ namespace eShopFinalProject.Services.Products
                     Color = color
                 };
 
-                await _unitOfWork.ProductInColorRepository.AddAsync(pic);
+                await _productInColorRepository.AddAsync(pic);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Product>(201, String.Format(Resource.Create_Succes_Template, Resource.Resource_Product));
             }
@@ -134,19 +151,19 @@ namespace eShopFinalProject.Services.Products
         {
             try
             {
-                var existedEntity = await _unitOfWork.ProductRepository.GetAsync(request.Id);
+                var existedEntity = await _productRepository.GetAsync(request.Id);
                 if (existedEntity == null)
                 {
                     return new ResultWrapperDto<Product>(400, Resource.Product_Existed);
                 }
 
-                var brand = await _unitOfWork.BrandRepository.GetAsync(request.BrandId);
+                var brand = await _brandRepository.GetAsync(request.BrandId);
                 if (brand == null)
                 {
                     return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Brand));
                 }
 
-                var category = await _unitOfWork.CategoryRepository.GetAsync(request.CategoryId);
+                var category = await _categoryRepository.GetAsync(request.CategoryId);
                 if (category == null)
                 {
                     return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Category));
@@ -161,7 +178,7 @@ namespace eShopFinalProject.Services.Products
                 existedEntity.BrandId = request.BrandId;
                 existedEntity.CategoryId = request.CategoryId;
 
-                var result = _unitOfWork.ProductRepository.Update(existedEntity);
+                var result = _productRepository.Update(existedEntity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Product>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_Product));
             }
@@ -176,13 +193,13 @@ namespace eShopFinalProject.Services.Products
         {
             try
             {
-                var entity = await _unitOfWork.ProductRepository.GetAsync(request.Id);
+                var entity = await _productRepository.GetAsync(request.Id);
                 if (entity == null)
                 {
                     return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Product));
                 }
 
-                var result = _unitOfWork.ProductRepository.Delete(entity);
+                var result = _productRepository.Delete(entity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Product>(200, String.Format(Resource.Delete_Succes_Template, Resource.Resource_Product));
             }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eShopFinalProject.Data.Entities;
+using eShopFinalProject.Data.Infrastructure;
 using eShopFinalProject.Data.Infrastructure.Interface;
 using eShopFinalProject.Utilities.Common;
 using eShopFinalProject.Utilities.Resources;
@@ -12,13 +13,16 @@ namespace eShopFinalProject.Services.Colors
     {
 
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IColorRepository _colorRepository;
         private readonly IMapper _mapper;
 
         public ColorService(
             IUnitOfWork unitOfWork,
+            IColorRepository colorRepository,
             IMapper mapper
             )
         {
+            _colorRepository = colorRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -27,12 +31,12 @@ namespace eShopFinalProject.Services.Colors
         public async Task<ResultWrapperDto<Color>> CreateAsync(CreateColorRequest request)
         {
             try {
-                var existedEntity = await _unitOfWork.ColorRepository.FindAsync(x => x.Title == request.Title);
+                var existedEntity = await _colorRepository.FindAsync(x => x.Title == request.Title);
                 if (existedEntity.Any()) {
                     return new ResultWrapperDto<Color>(400 ,Resource.Color_Existed);
                 }
                 Color entity = _mapper.Map<Color>(request);
-                var result = await _unitOfWork.ColorRepository.AddAsync(entity);
+                var result = await _colorRepository.AddAsync(entity);
 
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Color>(201, String.Format(Resource.Create_Succes_Template, Resource.Resource_Color));
@@ -46,7 +50,7 @@ namespace eShopFinalProject.Services.Colors
         public async Task<ResultWrapperDto<PagingResult<ColorVM>>> GetAllAsync(PagingGetAllRequest req)
         {
             try {
-                var listItem = await _unitOfWork.ColorRepository.AllAsync();
+                var listItem = await _colorRepository.AllAsync();
 
                 if (!string.IsNullOrEmpty(req.Search))
                 {
@@ -79,7 +83,7 @@ namespace eShopFinalProject.Services.Colors
         {
             try
             {
-                var entity = await _unitOfWork.ColorRepository.GetAsync(id);
+                var entity = await _colorRepository.GetAsync(id);
                 if (entity == null)
                 {
                     return new ResultWrapperDto<ColorVM>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Color));
@@ -97,13 +101,13 @@ namespace eShopFinalProject.Services.Colors
         {
             try
             {
-                var foundEntity = await _unitOfWork.ColorRepository.GetAsync(request.Id);
+                var foundEntity = await _colorRepository.GetAsync(request.Id);
                 if (foundEntity == null)
                 {
                     return new ResultWrapperDto<Color>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Color));
                 }
 
-                var existedEntity = await _unitOfWork.ColorRepository.FindAsync(x => x.Title == request.Title);
+                var existedEntity = await _colorRepository.FindAsync(x => x.Title == request.Title);
                 if (existedEntity.Any())
                 {
                     return new ResultWrapperDto<Color>(400, Resource.Color_Existed);
@@ -111,7 +115,7 @@ namespace eShopFinalProject.Services.Colors
 
                 foundEntity.Title = request.Title;
 
-                var result = _unitOfWork.ColorRepository.Update(foundEntity);
+                var result = _colorRepository.Update(foundEntity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Color>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_Color));
             }
@@ -125,13 +129,13 @@ namespace eShopFinalProject.Services.Colors
         {
             try
             {
-                var entity = await _unitOfWork.ColorRepository.GetAsync(request.Id);
+                var entity = await _colorRepository.GetAsync(request.Id);
                 if (entity == null)
                 {
                     return new ResultWrapperDto<Color>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Color));
                 }
 
-                var result = _unitOfWork.ColorRepository.Delete(entity);
+                var result = _colorRepository.Delete(entity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Color>(200, String.Format(Resource.Delete_Succes_Template, Resource.Resource_Color));
             }
