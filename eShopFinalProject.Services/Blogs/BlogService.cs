@@ -160,6 +160,7 @@ namespace eShopFinalProject.Services.Blogs
                 }
 
                 foundEntity.Title = request.Title;
+                foundEntity.Description = request.Description;
                 var result = _blogRepository.Update(foundEntity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Blog>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_Blog));

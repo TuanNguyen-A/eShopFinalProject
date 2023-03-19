@@ -35,6 +35,7 @@ namespace eShopFinalProject.Data.EF
             builder.ApplyConfiguration(new ProductRatingConfiguration());
             builder.ApplyConfiguration(new AppUserConfiguration());
             builder.ApplyConfiguration(new AppRoleConfiguration());
+            builder.ApplyConfiguration(new EnqConfiguration());
 
             //Identity
             builder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");

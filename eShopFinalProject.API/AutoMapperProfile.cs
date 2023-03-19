@@ -5,6 +5,7 @@ using eShopFinalProject.Utilities.ViewModel.Brands;
 using eShopFinalProject.Utilities.ViewModel.Categories;
 using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.ViewModel.Coupons;
+using eShopFinalProject.Utilities.ViewModel.Enqs;
 using eShopFinalProject.Utilities.ViewModel.Products;
 using eShopFinalProject.Utilities.ViewModel.Users;
 
@@ -32,6 +33,9 @@ namespace eShopFinalProject.API
 
             CreateMap<CreateBlogRequest, Blog>();
             CreateMap<Blog, BlogVM>();
+
+            CreateMap<CreateEnqRequest, Enq>();
+            CreateMap<Enq, EnqVM>();
 
             CreateMap<CreateProductRequest, Product>();
             CreateMap<Product, ProductVM>()
