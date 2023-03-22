@@ -19,6 +19,7 @@ namespace eShopFinalProject.Services.Users
         Task<ResultWrapperDto<AppUser>> CreateAdminAsync(CreateUserRequest request);
         Task<ResultWrapperDto<AuthenticationResponse>> Authenticate(LoginRequest request);
         Task<ResultWrapperDto<AppUser>> UpdateAsync(UpdateUserRequest request);
-        Task<ResultWrapperDto<AppUser>> DeleteAsync(DeleteUserRequest request);
+        Task<ResultWrapperDto<AppUser>> DeleteAsync(IdUserRequest request);
+        Task<ResultWrapperDto<AppUser>> BlockOrUnblockUser(string id, bool isBlock);
     }
 }

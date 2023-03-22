@@ -22,6 +22,7 @@ using eShopFinalProject.Services.JwtService;
 using System.Text;
 using eShopFinalProject.Services.Blogs;
 using eShopFinalProject.Services.Enqs;
+using eShopFinalProject.Services.Uploads;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,6 +88,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IBlogService, BlogService>();
 builder.Services.AddTransient<IEnqService, EnqService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
+builder.Services.AddTransient<IUploadService, UploadService>();
 
 builder.Services.AddTransient<IAppRoleRepository, AppRoleRepository>();
 builder.Services.AddTransient<IAppUserRepository, AppUserRepository>();

@@ -304,6 +304,15 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image upload failed.
+        /// </summary>
+        public static string UploadImage_Failed {
+            get {
+                return ResourceManager.GetString("UploadImage_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot change email.
         /// </summary>
         public static string User_Cannot_Change_Email {

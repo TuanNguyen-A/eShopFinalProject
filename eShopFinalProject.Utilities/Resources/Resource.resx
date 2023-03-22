@@ -198,6 +198,9 @@
   <data name="Update_Succes_Template" xml:space="preserve">
     <value>Update {0} success</value>
   </data>
+  <data name="UploadImage_Failed" xml:space="preserve">
+    <value>Image upload failed</value>
+  </data>
   <data name="UserEmail_Existed" xml:space="preserve">
     <value>Email is already in use</value>
   </data>

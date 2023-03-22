@@ -115,7 +115,7 @@ namespace eShopFinalProject.Services.Users
             return new ResultWrapperDto<AuthenticationResponse>(token);
         }
 
-        public async Task<ResultWrapperDto<AppUser>> DeleteAsync(DeleteUserRequest request)
+        public async Task<ResultWrapperDto<AppUser>> DeleteAsync(IdUserRequest request)
         {
             try
             {
@@ -223,6 +223,27 @@ namespace eShopFinalProject.Services.Users
                 {
                     foundEntity.PhoneNumber = request.PhoneNumber;
                 }
+
+                await _userManager.UpdateAsync(foundEntity);
+                return new ResultWrapperDto<AppUser>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_User));
+            }
+            catch (Exception)
+            {
+                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Update, Resource.Resource_User));
+            }
+        }
+
+        public async Task<ResultWrapperDto<AppUser>> BlockOrUnblockUser(string id, bool isBlock)
+        {
+            try
+            {
+                var foundEntity = await _userManager.FindByIdAsync(id);
+                if (foundEntity == null)
+                {
+                    return new ResultWrapperDto<AppUser>(404, String.Format(Resource.NotFound_Template, Resource.Resource_User));
+                }
+
+                foundEntity.IsBlock = isBlock;
 
                 await _userManager.UpdateAsync(foundEntity);
                 return new ResultWrapperDto<AppUser>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_User));
