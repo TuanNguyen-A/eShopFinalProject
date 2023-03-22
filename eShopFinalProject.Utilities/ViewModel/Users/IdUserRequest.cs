@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace eShopFinalProject.Utilities.ViewModel.Users
 {
-    public class DeleteUserRequest
+    public class IdUserRequest
     {
         public string Id { get; set; }
     }

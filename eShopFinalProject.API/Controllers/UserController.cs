@@ -86,9 +86,25 @@ namespace eShopFinalProject.API.Controllers
 
         [HttpDelete("delete")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Delete([FromBody] DeleteUserRequest request)
+        public async Task<IActionResult> Delete([FromBody] IdUserRequest request)
         {
             var result = await _userService.DeleteAsync(request);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [HttpPut("block")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> BlockUser([FromBody] IdUserRequest request)
+        {
+            var result = await _userService.BlockOrUnblockUser(request.Id, true);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [HttpPut("unblock")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UnlockUser([FromBody] IdUserRequest request)
+        {
+            var result = await _userService.BlockOrUnblockUser(request.Id, false);
             return StatusCode(result.StatusCode, result.Message);
         }
     }
