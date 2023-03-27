@@ -75,5 +75,38 @@ namespace eShopFinalProject.Services.Uploads
                 throw new Exception(String.Format(Resource.UploadImage_Failed));
             }
         }
+
+        public async Task<UploadImageReponse> UploadImage(IFormFile image)
+        {
+            try
+            {
+                MemoryStream ms;
+
+                ms = new MemoryStream();
+                await image.CopyToAsync(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                string fileName = Guid.NewGuid().ToString();
+
+                ImageUploadParams uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(fileName, ms),
+                    UseFilename = true,
+                    UniqueFilename = false,
+                    Overwrite = true
+                };
+                ImageUploadResult uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                uploadResult.Url.ToString();
+
+                return new UploadImageReponse()
+                {
+                    PublicId = uploadResult.PublicId,
+                    Url = uploadResult.Url.ToString()
+                };
+            }
+            catch (Exception e)
+            {
+                throw new Exception(String.Format(Resource.UploadImage_Failed));
+            }
+        }
     }
 }

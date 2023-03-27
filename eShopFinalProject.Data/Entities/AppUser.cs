@@ -9,12 +9,12 @@ namespace eShopFinalProject.Data.Entities
 {
     public class AppUser : IdentityUser<Guid>
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public string Address { get; set; }
         public bool IsBlock { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public String Avatar { get; set; }
         public virtual List<ProductRating> ProductRatings { get; set; }
         public virtual List<Blog> Blogs { get; set; }
 

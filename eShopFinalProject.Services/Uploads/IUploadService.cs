@@ -12,5 +12,6 @@ namespace eShopFinalProject.Services.Uploads
     public interface IUploadService
     {
         Task<ResultWrapperDto<List<UploadImageReponse>>> UploadProductImage(IFormFileCollection images);
+        Task<UploadImageReponse> UploadImage(IFormFile image);
     }
 }

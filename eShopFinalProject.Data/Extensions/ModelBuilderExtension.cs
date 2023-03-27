@@ -17,17 +17,26 @@ namespace eShopFinalProject.Data.Extensions
         {
             var roleAdminId = new Guid("8D04DCE2-969A-435D-BBA4-DF3F325983DC");
             var roleUserId = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc");
+            var roleSellerId = new Guid("200d51fd-eae5-4951-9734-f4538c85947d");
             var userId = new Guid("69BD714F-9576-45BA-B5B7-F00649BE00DE");
 
             // USER & ROLE
 
-            modelBuilder.Entity<AppRole>().HasData(new AppRole
-            {
-                Id = roleAdminId,
-                Name = "admin",
-                NormalizedName = "ADMIN",
-                Description = "Administrator role"
-            },
+            modelBuilder.Entity<AppRole>().HasData(
+                new AppRole
+                {
+                    Id = roleAdminId,
+                    Name = "admin",
+                    NormalizedName = "ADMIN",
+                    Description = "Administrator role"
+                },
+                new AppRole
+                {
+                    Id = roleSellerId,
+                    Name = "seller",
+                    NormalizedName = "SELLER",
+                    Description = "Seller role"
+                },
                 new AppRole
                 {
                     Id = roleUserId,
@@ -49,9 +58,9 @@ namespace eShopFinalProject.Data.Extensions
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "Abcd1234$"),
                 SecurityStamp = string.Empty,
-                FirstName = "Tuan",
-                LastName = "Nguyen",
-                PhoneNumber = "123456"
+                FullName = "Tuan Nguyen",
+                PhoneNumber = "123456",
+                Avatar = "TestURL",
             });
 
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>

@@ -3,14 +3,19 @@ using eShopFinalProject.Data.Entities;
 using eShopFinalProject.Data.Infrastructure;
 using eShopFinalProject.Data.Infrastructure.Interface;
 using eShopFinalProject.Services.Jwts;
+using eShopFinalProject.Services.Mails;
+using eShopFinalProject.Services.Uploads;
 using eShopFinalProject.Utilities.Common;
 using eShopFinalProject.Utilities.Resources;
+using eShopFinalProject.Utilities.ViewModel.Mails;
 using eShopFinalProject.Utilities.ViewModel.Page;
 using eShopFinalProject.Utilities.ViewModel.Products;
 using eShopFinalProject.Utilities.ViewModel.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
+using System.Web;
 
 namespace eShopFinalProject.Services.Users
 {
@@ -24,6 +29,8 @@ namespace eShopFinalProject.Services.Users
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
         private readonly IAppUserRepository _appUserRepository;
+        private readonly IMailService _mailService;
+        private readonly IUploadService _uploadService;
 
         public UserService(
             UserManager<AppUser> userManager,
@@ -32,6 +39,8 @@ namespace eShopFinalProject.Services.Users
             IAppUserRepository appUserRepository,
             IConfiguration config,
             IUnitOfWork unitOfWork,
+            IMailService mailService,
+            IUploadService uploadService,
             IMapper mapper,
             IJwtService jwtService)
         {
@@ -39,13 +48,15 @@ namespace eShopFinalProject.Services.Users
             _signInManager = signInManager;
             _roleManager = roleManager;
             _appUserRepository = appUserRepository;
+            _mailService = mailService;
+            _uploadService = uploadService;
             _config = config;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _jwtService = jwtService;
         }
 
-        public async Task<ResultWrapperDto<AppUser>> CreateAsync(CreateUserRequest request)
+        public async Task<ResultWrapperDto<AppUser>> CreateAsync(CreateUserRequest request, string role)
         {
             try
             {
@@ -55,15 +66,22 @@ namespace eShopFinalProject.Services.Users
                     return new ResultWrapperDto<AppUser>(400, Resource.UserEmail_Existed);
                 }
 
-                AppUser entity = _mapper.Map<AppUser>(request);
+                AppUser user = _mapper.Map<AppUser>(request);
 
-                entity.IsBlock = false;
-                entity.UserName = entity.Email;
+                user.IsBlock = false;
+                user.UserName = user.Email;
 
-                await _userManager.CreateAsync(entity, request.Password);
+                if(request.AvatarImage != null)
+                {
+                    var uploadImageResponse = await _uploadService.UploadImage(request.AvatarImage);
+                    user.Avatar = uploadImageResponse.Url;
+                }
 
-                await _userManager.AddToRoleAsync(entity, "user");
-                
+                await _userManager.CreateAsync(user, request.Password);
+
+                await _userManager.AddToRoleAsync(user, role);
+
+                await SendConfirmationEmail(user);
                 return new ResultWrapperDto<AppUser>(201, String.Format(Resource.Create_Succes_Template, Resource.Resource_User));
             }
             catch (Exception)
@@ -72,30 +90,41 @@ namespace eShopFinalProject.Services.Users
             }
         }
 
-        public async Task<ResultWrapperDto<AppUser>> CreateAdminAsync(CreateUserRequest request)
+        public async Task<ResultWrapperDto<AppUser>> ActivateUser(ActiveRequest req)
         {
             try
             {
-                var existedEntity = await _userManager.FindByEmailAsync(request.Email);
-                if (existedEntity != null)
+                var user = await _userManager.FindByEmailAsync(req.Email);
+                if (user == null)
                 {
-                    return new ResultWrapperDto<AppUser>(400, Resource.UserEmail_Existed);
+                    return new ResultWrapperDto<AppUser>(404, String.Format(Resource.NotFound_Template, Resource.Resource_User));
                 }
-
-                AppUser entity = _mapper.Map<AppUser>(request);
-
-                entity.IsBlock = false;
-                entity.UserName = entity.Email;
-
-                await _userManager.CreateAsync(entity, request.Password);
-
-                await _userManager.AddToRoleAsync(entity, "admin");
-
-                return new ResultWrapperDto<AppUser>(201, String.Format(Resource.Create_Succes_Template, Resource.Resource_User));
+                var result = await _userManager.ConfirmEmailAsync(user, req.Token);
+                return new ResultWrapperDto<AppUser>(200, String.Format(Resource.Activate_Success));
             }
             catch (Exception)
             {
-                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Create, Resource.Resource_User));
+                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Activate, Resource.Resource_User));
+            }
+        }
+
+        public async Task SendConfirmationEmail(AppUser user)
+        {
+            try
+            {
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = $"{_config.GetSection("FrontendURL").Value}/activation/{token}";
+                var message = new MailRequest()
+                {
+                    ToEmail= user.Email,
+                    Subject="Confirm Email",
+                    Body = $"This is activation link for your account: {confirmationLink}"
+                };
+                await _mailService.SendEmailAsync(message);
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -143,7 +172,7 @@ namespace eShopFinalProject.Services.Users
 
                 if (!string.IsNullOrEmpty(req.Search))
                 {
-                    listItem = listItem.Where(x => x.Email.Contains(req.Search) || x.FirstName.Contains(req.Search) || x.LastName.Contains(req.Search)).ToList();
+                    listItem = listItem.Where(x => x.Email.Contains(req.Search) || x.FullName.Contains(req.Search)).ToList();
                 }
 
                 var listPagingItem = listItem
@@ -204,14 +233,9 @@ namespace eShopFinalProject.Services.Users
                     return new ResultWrapperDto<AppUser>(400, String.Format(Resource.User_Cannot_Change_Email));
                 }
 
-                if(request.FirstName != null)
+                if(request.FullName != null)
                 {
-                    foundEntity.FirstName = request.FirstName;
-                }
-
-                if (request.LastName != null)
-                {
-                    foundEntity.LastName = request.LastName;
+                    foundEntity.FullName = request.FullName;
                 }
 
                 if (request.Address != null)
