@@ -8,6 +8,7 @@ using eShopFinalProject.Utilities.ViewModel.Brands;
 using Microsoft.AspNetCore.Authorization;
 using eShopFinalProject.Utilities.ViewModel.Page;
 using eShopFinalProject.Utilities.ViewModel.Colors;
+using eShopFinalProject.Utilities.Resources;
 
 namespace eShopFinalProject.API.Controllers
 {
@@ -26,17 +27,33 @@ namespace eShopFinalProject.API.Controllers
         // POST: api/Users
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
+        public async Task<IActionResult> CreateUser([FromForm] CreateUserRequest request)
         {
-            var result = await _userService.CreateAsync(request);
+            var result = await _userService.CreateAsync(request, AppConstants.Role.User);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [HttpPost("create-shop")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> CreateSeller([FromForm] CreateUserRequest request)
+        {
+            var result = await _userService.CreateAsync(request, AppConstants.Role.Seller);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [HttpPost("activate")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ActivateUser([FromBody] ActiveRequest request)
+        {
+            var result = await _userService.ActivateUser(request);
             return StatusCode(result.StatusCode, result.Message);
         }
 
         [HttpPost("admin")]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateAdmin([FromBody] CreateUserRequest request)
+        public async Task<IActionResult> CreateAdmin([FromForm] CreateUserRequest request)
         {
-            var result = await _userService.CreateAdminAsync(request);
+            var result = await _userService.CreateAsync(request, AppConstants.Role.Admin);
             return StatusCode(result.StatusCode, result.Message);
         }
 

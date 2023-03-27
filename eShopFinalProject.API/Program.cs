@@ -23,6 +23,9 @@ using System.Text;
 using eShopFinalProject.Services.Blogs;
 using eShopFinalProject.Services.Enqs;
 using eShopFinalProject.Services.Uploads;
+using eShopFinalProject.Utilities.ViewModel.Mails;
+using Microsoft.Extensions.Configuration;
+using eShopFinalProject.Services.Mails;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +78,8 @@ builder.Services.AddIdentity<AppUser, AppRole>(options => {
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
+
+    options.SignIn.RequireConfirmedEmail = true;
 })
     .AddEntityFrameworkStores<eShopDbContext>()
     .AddDefaultTokenProviders();
@@ -89,6 +94,7 @@ builder.Services.AddTransient<IBlogService, BlogService>();
 builder.Services.AddTransient<IEnqService, EnqService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IUploadService, UploadService>();
+builder.Services.AddTransient<IMailService, MailService>();
 
 builder.Services.AddTransient<IAppRoleRepository, AppRoleRepository>();
 builder.Services.AddTransient<IAppUserRepository, AppUserRepository>();
@@ -137,6 +143,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 builder.Services.AddCors(options => options.AddPolicy("corsapp",
     policy => policy.WithOrigins("*").AllowAnyHeader().AllowAnyMethod()
     ));
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 var app = builder.Build();
 

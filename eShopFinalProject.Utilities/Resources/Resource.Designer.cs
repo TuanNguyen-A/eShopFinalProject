@@ -70,6 +70,15 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activating.
+        /// </summary>
+        public static string Action_Activate {
+            get {
+                return ResourceManager.GetString("Action_Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating.
         /// </summary>
         public static string Action_Create {
@@ -111,6 +120,15 @@ namespace eShopFinalProject.Utilities.Resources {
         public static string ActionFail_Template {
             get {
                 return ResourceManager.GetString("ActionFail_Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successful user activation.
+        /// </summary>
+        public static string Activate_Success {
+            get {
+                return ResourceManager.GetString("Activate_Success", resourceCulture);
             }
         }
         

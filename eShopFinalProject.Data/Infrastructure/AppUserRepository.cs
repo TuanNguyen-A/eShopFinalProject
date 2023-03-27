@@ -31,8 +31,7 @@ namespace eShopFinalProject.Data.Infrastructure
                          {
                              Id = u.Id,
                              Email = u.Email,
-                             FirstName = u.FirstName,
-                             LastName = u.LastName,
+                             FullName = u.FullName,
                              Address = u.Address,
                              PhoneNumber = u.PhoneNumber,
                              Role = r.Name,

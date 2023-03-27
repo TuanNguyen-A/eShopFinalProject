@@ -49,15 +49,23 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "527bb166-58cf-47ea-9e13-790babcde338",
+                            ConcurrencyStamp = "8f237ec7-4de4-483c-8af6-dde1ee7edfdb",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
+                            Id = new Guid("200d51fd-eae5-4951-9734-f4538c85947d"),
+                            ConcurrencyStamp = "b6603e22-9da1-4fc3-9c3c-5c5c2e35ab24",
+                            Description = "Seller role",
+                            Name = "seller",
+                            NormalizedName = "SELLER"
+                        },
+                        new
+                        {
                             Id = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"),
-                            ConcurrencyStamp = "b4b64d7f-cbba-49ce-a0c1-6aff887fa2e4",
+                            ConcurrencyStamp = "87aa3cfc-203d-4842-a108-bb0f01acf82f",
                             Description = "User role",
                             Name = "user",
                             NormalizedName = "USER"
@@ -77,6 +85,10 @@ namespace eShopFinalProject.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -90,18 +102,15 @@ namespace eShopFinalProject.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("IsBlock")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -147,17 +156,17 @@ namespace eShopFinalProject.Data.Migrations
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
                             Address = "Test Address",
-                            ConcurrencyStamp = "43986e48-a2a9-4fd0-8122-e42557f28a8a",
+                            Avatar = "TestURL",
+                            ConcurrencyStamp = "f6722e95-b0e9-490b-a532-f06dacd46f71",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "tuan3032001@gmail.com",
                             EmailConfirmed = true,
-                            FirstName = "Tuan",
+                            FullName = "Tuan Nguyen",
                             IsBlock = false,
-                            LastName = "Nguyen",
                             LockoutEnabled = false,
                             NormalizedEmail = "tuan3032001@gmail.com",
                             NormalizedUserName = "User 1",
-                            PasswordHash = "AQAAAAEAACcQAAAAELag4EeJiwLfLSC2Bixo2vksubRGVqg7uccotHVfg3gHBYs6Dhx2COeRxHhwOyIq2A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENjSVa5CVwVHvnDtFB10DSh4EGcqF8Q9px7lpfjkzKu8W7yQaS44VksOHPqSfyDCMg==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",

@@ -123,6 +123,9 @@
   <data name="ActionFail_Template" xml:space="preserve">
     <value>{0} {1} Is Failed</value>
   </data>
+  <data name="Action_Activate" xml:space="preserve">
+    <value>Activating</value>
+  </data>
   <data name="Action_Create" xml:space="preserve">
     <value>Creating</value>
   </data>
@@ -134,6 +137,9 @@
   </data>
   <data name="Action_Update" xml:space="preserve">
     <value>Updating</value>
+  </data>
+  <data name="Activate_Success" xml:space="preserve">
+    <value>Successful user activation</value>
   </data>
   <data name="Brand_Existed" xml:space="preserve">
     <value>Brand is already in use</value>
