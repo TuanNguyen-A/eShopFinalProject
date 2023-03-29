@@ -253,6 +253,11 @@ namespace eShopFinalProject.Services.Users
                     foundEntity.PhoneNumber = request.PhoneNumber;
                 }
 
+                if (request.ZipCode != null)
+                {
+                    foundEntity.PhoneNumber = request.PhoneNumber;
+                }
+
                 await _userManager.UpdateAsync(foundEntity);
                 return new ResultWrapperDto<AppUser>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_User));
             }

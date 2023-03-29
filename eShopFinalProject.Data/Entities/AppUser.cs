@@ -12,6 +12,7 @@ namespace eShopFinalProject.Data.Entities
         public string FullName { get; set; }
         public string Address { get; set; }
         public bool IsBlock { get; set; }
+        public string? ZipCode { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public String Avatar { get; set; }

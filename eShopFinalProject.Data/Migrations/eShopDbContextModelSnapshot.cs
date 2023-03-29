@@ -49,7 +49,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "8f237ec7-4de4-483c-8af6-dde1ee7edfdb",
+                            ConcurrencyStamp = "10a1865a-a085-45e2-ab6a-ea6ca78f2bbe",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -57,7 +57,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("200d51fd-eae5-4951-9734-f4538c85947d"),
-                            ConcurrencyStamp = "b6603e22-9da1-4fc3-9c3c-5c5c2e35ab24",
+                            ConcurrencyStamp = "d754e6cc-9372-4590-9811-a6cc025c84b2",
                             Description = "Seller role",
                             Name = "seller",
                             NormalizedName = "SELLER"
@@ -65,7 +65,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"),
-                            ConcurrencyStamp = "87aa3cfc-203d-4842-a108-bb0f01acf82f",
+                            ConcurrencyStamp = "64e2b55f-b3c2-43f3-bf9b-8b7054ef1c64",
                             Description = "User role",
                             Name = "user",
                             NormalizedName = "USER"
@@ -146,6 +146,9 @@ namespace eShopFinalProject.Data.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers", (string)null);
@@ -157,7 +160,7 @@ namespace eShopFinalProject.Data.Migrations
                             AccessFailedCount = 0,
                             Address = "Test Address",
                             Avatar = "TestURL",
-                            ConcurrencyStamp = "f6722e95-b0e9-490b-a532-f06dacd46f71",
+                            ConcurrencyStamp = "d0cb75f2-1560-4348-bb15-7a19af734633",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "tuan3032001@gmail.com",
                             EmailConfirmed = true,
@@ -166,7 +169,7 @@ namespace eShopFinalProject.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "tuan3032001@gmail.com",
                             NormalizedUserName = "User 1",
-                            PasswordHash = "AQAAAAEAACcQAAAAENjSVa5CVwVHvnDtFB10DSh4EGcqF8Q9px7lpfjkzKu8W7yQaS44VksOHPqSfyDCMg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMl1rRNhYnxsMO3itp8BY38D1d8oL5FD6bMyb6X3zwDO34V3mLTb4a1o2gJqToxVeg==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",

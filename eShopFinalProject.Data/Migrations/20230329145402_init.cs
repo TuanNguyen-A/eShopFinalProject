@@ -88,6 +88,7 @@ namespace eShopFinalProject.Data.Migrations
                     FullName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsBlock = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Avatar = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -357,9 +358,9 @@ namespace eShopFinalProject.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("200d51fd-eae5-4951-9734-f4538c85947d"), "b6603e22-9da1-4fc3-9c3c-5c5c2e35ab24", "Seller role", "seller", "SELLER" },
-                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "87aa3cfc-203d-4842-a108-bb0f01acf82f", "User role", "user", "USER" },
-                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "8f237ec7-4de4-483c-8af6-dde1ee7edfdb", "Administrator role", "admin", "ADMIN" }
+                    { new Guid("200d51fd-eae5-4951-9734-f4538c85947d"), "d754e6cc-9372-4590-9811-a6cc025c84b2", "Seller role", "seller", "SELLER" },
+                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "64e2b55f-b3c2-43f3-bf9b-8b7054ef1c64", "User role", "user", "USER" },
+                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "10a1865a-a085-45e2-ab6a-ea6ca78f2bbe", "Administrator role", "admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -369,8 +370,8 @@ namespace eShopFinalProject.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "AppUsers",
-                columns: new[] { "Id", "AccessFailedCount", "Address", "Avatar", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedDate", "UserName" },
-                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "TestURL", "f6722e95-b0e9-490b-a532-f06dacd46f71", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tuan3032001@gmail.com", true, "Tuan Nguyen", false, null, "tuan3032001@gmail.com", "User 1", "AQAAAAEAACcQAAAAENjSVa5CVwVHvnDtFB10DSh4EGcqF8Q9px7lpfjkzKu8W7yQaS44VksOHPqSfyDCMg==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User 1" });
+                columns: new[] { "Id", "AccessFailedCount", "Address", "Avatar", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedDate", "UserName", "ZipCode" },
+                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "TestURL", "d0cb75f2-1560-4348-bb15-7a19af734633", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tuan3032001@gmail.com", true, "Tuan Nguyen", false, null, "tuan3032001@gmail.com", "User 1", "AQAAAAEAACcQAAAAEMl1rRNhYnxsMO3itp8BY38D1d8oL5FD6bMyb6X3zwDO34V3mLTb4a1o2gJqToxVeg==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User 1", null });
 
             migrationBuilder.InsertData(
                 table: "Brands",
