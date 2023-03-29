@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 using eShopFinalProject.Utilities.ViewModel.Page;
 using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.Resources;
+using System.IdentityModel.Tokens.Jwt;
+using eShopFinalProject.Utilities.Common;
+using System.Security.Claims;
 
 namespace eShopFinalProject.API.Controllers
 {
@@ -87,6 +90,20 @@ namespace eShopFinalProject.API.Controllers
         public async Task<IActionResult> Get(string email)
         {
             var result = await _userService.GetAsync(email);
+
+            return result.StatusCode != 200 ?
+                StatusCode(result.StatusCode, result.Message) :
+                Ok(result.Dto);
+        }
+
+        [HttpGet("load-user")]
+        [Authorize]
+        public async Task<IActionResult> LoadUser([FromHeader(Name = "Authorization")] string authorization)
+        {
+            JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
+            object email;
+            jwtToken.Payload.TryGetValue(ClaimTypes.Email, out email);
+            var result = await _userService.GetAsync((string)email);
 
             return result.StatusCode != 200 ?
                 StatusCode(result.StatusCode, result.Message) :

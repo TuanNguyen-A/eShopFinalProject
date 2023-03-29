@@ -49,11 +49,11 @@ namespace eShopFinalProject.Data.Extensions
             var hasher = new PasswordHasher<AppUser>();
             modelBuilder.Entity<AppUser>().HasData(new AppUser
             {
-                Id = userId,
-                UserName = "User 1",
-                NormalizedUserName = "User 1",
-                Email = "tuan3032001@gmail.com",
-                NormalizedEmail = "tuan3032001@gmail.com",
+                Id = roleAdminId,
+                UserName = "admin@gmail.com",
+                NormalizedUserName = "admin@gmail.com",
+                Email = "admin@gmail.com",
+                NormalizedEmail = "admin@gmail.com",
                 Address = "Test Address",
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "Abcd1234$"),
