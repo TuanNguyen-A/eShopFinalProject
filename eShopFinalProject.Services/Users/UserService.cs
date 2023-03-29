@@ -99,7 +99,11 @@ namespace eShopFinalProject.Services.Users
                 {
                     return new ResultWrapperDto<AppUser>(404, String.Format(Resource.NotFound_Template, Resource.Resource_User));
                 }
-                var result = await _userManager.ConfirmEmailAsync(user, req.Token);
+                var result = await _userManager.ConfirmEmailAsync(user, HttpUtility.UrlDecode(req.Token));
+                if (result.Succeeded == false)
+                {
+                    return new ResultWrapperDto<AppUser>(400, String.Format(Resource.Activate_Fail));
+                }
                 return new ResultWrapperDto<AppUser>(200, String.Format(Resource.Activate_Success));
             }
             catch (Exception)
@@ -113,7 +117,8 @@ namespace eShopFinalProject.Services.Users
             try
             {
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = $"{_config.GetSection("FrontendURL").Value}/activation/{token}";
+
+                var confirmationLink = $"{_config.GetSection("FrontendURL").Value}/activation/{HttpUtility.UrlEncode(token)}";
                 var message = new MailRequest()
                 {
                     ToEmail= user.Email,

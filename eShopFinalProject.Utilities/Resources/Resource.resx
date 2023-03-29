@@ -138,6 +138,9 @@
   <data name="Action_Update" xml:space="preserve">
     <value>Updating</value>
   </data>
+  <data name="Activate_Fail" xml:space="preserve">
+    <value>Failed user activation</value>
+  </data>
   <data name="Activate_Success" xml:space="preserve">
     <value>Successful user activation</value>
   </data>

@@ -34,7 +34,7 @@ namespace eShopFinalProject.API.Controllers
         }
 
         [HttpPost("create-shop")]
-        [Authorize(Roles = "admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateSeller([FromForm] CreateUserRequest request)
         {
             var result = await _userService.CreateAsync(request, AppConstants.Role.Seller);

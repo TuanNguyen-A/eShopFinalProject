@@ -124,6 +124,15 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed user activation.
+        /// </summary>
+        public static string Activate_Fail {
+            get {
+                return ResourceManager.GetString("Activate_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Successful user activation.
         /// </summary>
         public static string Activate_Success {
