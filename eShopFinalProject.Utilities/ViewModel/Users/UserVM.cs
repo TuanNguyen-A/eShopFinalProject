@@ -17,5 +17,6 @@ namespace eShopFinalProject.Utilities.ViewModel.Users
         public string? ZipCode { get; set; }
         public string Role { get; set;}
         public bool IsBlock { get; set; }
+        public string Avatar { get; set; }
     }
 }
