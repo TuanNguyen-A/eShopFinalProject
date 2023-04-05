@@ -196,6 +196,24 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting Image is failed.
+        /// </summary>
+        public static string DeleteImage_Failed {
+            get {
+                return ResourceManager.GetString("DeleteImage_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting Image is success.
+        /// </summary>
+        public static string DeleteImage_Success {
+            get {
+                return ResourceManager.GetString("DeleteImage_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Getting {0} Is Failed.
         /// </summary>
         public static string GetFailed_Template {
@@ -286,6 +304,15 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image.
+        /// </summary>
+        public static string Resource_Image {
+            get {
+                return ResourceManager.GetString("Resource_Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order.
         /// </summary>
         public static string Resource_Order {
@@ -318,6 +345,24 @@ namespace eShopFinalProject.Utilities.Resources {
         public static string Resource_User {
             get {
                 return ResourceManager.GetString("Resource_User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign out fail.
+        /// </summary>
+        public static string Signout_Fail {
+            get {
+                return ResourceManager.GetString("Signout_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign out success.
+        /// </summary>
+        public static string Signout_Success {
+            get {
+                return ResourceManager.GetString("Signout_Success", resourceCulture);
             }
         }
         

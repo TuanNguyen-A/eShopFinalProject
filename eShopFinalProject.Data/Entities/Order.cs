@@ -12,7 +12,11 @@ namespace eShopFinalProject.Data.Entities
         public int Id { get; set; }
         public OrderStatus orderStatus { get; set; }
         public Guid UserId { get; set; }
-        
+        public string ShipName { set; get; }
+        public string ShipAddress { set; get; }
+        public string ShipEmail { set; get; }
+        public string ShipPhoneNumber { set; get; }
+
         //Relationship
         public virtual AppUser User { get; set; }
         public virtual List<ProductInOrder> ProductInOrders { get; set; }

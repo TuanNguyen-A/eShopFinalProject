@@ -26,6 +26,7 @@ using eShopFinalProject.Services.Uploads;
 using eShopFinalProject.Utilities.ViewModel.Mails;
 using Microsoft.Extensions.Configuration;
 using eShopFinalProject.Services.Mails;
+using eShopFinalProject.Services.Images;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,7 +94,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IBlogService, BlogService>();
 builder.Services.AddTransient<IEnqService, EnqService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
-builder.Services.AddTransient<IUploadService, UploadService>();
+builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddTransient<IMailService, MailService>();
 
 builder.Services.AddTransient<IAppRoleRepository, AppRoleRepository>();
@@ -109,6 +110,7 @@ builder.Services.AddTransient<IProductInOrderRepository, ProductInOrderRepositor
 builder.Services.AddTransient<IProductRatingRepository, ProductRatingRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IEnqRepository, EnqRepository>();
+builder.Services.AddTransient<IImageRepository, ImageRepository>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();

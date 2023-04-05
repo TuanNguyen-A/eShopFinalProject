@@ -18,6 +18,7 @@ namespace eShopFinalProject.Data.Entities
         public String Avatar { get; set; }
         public virtual List<ProductRating> ProductRatings { get; set; }
         public virtual List<Blog> Blogs { get; set; }
+        public virtual List<Order> Orders { get; set; }
 
     }
 }

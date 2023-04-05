@@ -110,6 +110,19 @@ namespace eShopFinalProject.API.Controllers
                 Ok(result.Dto);
         }
 
+        //FAILED API
+        [HttpPost("signout")]
+        [Authorize]
+        public async Task<IActionResult> Signout([FromHeader(Name = "Authorization")] string authorization)
+        {
+            JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
+            object email;
+            jwtToken.Payload.TryGetValue(ClaimTypes.Email, out email);
+            var result = await _userService.Signout((string)email);
+
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
         [HttpPut("update")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update([FromBody] UpdateUserRequest request)

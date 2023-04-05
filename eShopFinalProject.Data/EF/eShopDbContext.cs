@@ -36,6 +36,7 @@ namespace eShopFinalProject.Data.EF
             builder.ApplyConfiguration(new AppUserConfiguration());
             builder.ApplyConfiguration(new AppRoleConfiguration());
             builder.ApplyConfiguration(new EnqConfiguration());
+            builder.ApplyConfiguration(new ImageConfiguration());
 
             //Identity
             builder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
@@ -56,6 +57,7 @@ namespace eShopFinalProject.Data.EF
         public DbSet<Color> Colors { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Image> Images { get; set; }
         public DbSet<ProductInColor> ProductInColors { get; set; }
         public DbSet<ProductInOrder> ProductInOrders { get; set; }
         public DbSet<ProductRating> ProductRatings { get; set; }
