@@ -1,35 +1,35 @@
 ﻿using AutoMapper;
 using eShopFinalProject.Data.Infrastructure.Interface;
 using eShopFinalProject.Data.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using eShopFinalProject.Data.Entities;
 using eShopFinalProject.Utilities.Common;
-using eShopFinalProject.Utilities.ViewModel.Enqs;
 using eShopFinalProject.Utilities.ViewModel.Uploads;
-using eShopFinalProject.Utilities.Resources;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Http;
 using CloudinaryDotNet.Actions;
-using static System.Net.Mime.MediaTypeNames;
 using Resource = eShopFinalProject.Utilities.Resources.Resource;
 using Microsoft.Extensions.Configuration;
+using eShopFinalProject.Services.Images;
+using eShopFinalProject.Utilities.ViewModel.Images;
+using MailKit.Net.Imap;
 
 namespace eShopFinalProject.Services.Uploads
 {
-    public class UploadService : IUploadService
+    public class ImageService : IImageService
     {
         private readonly IMapper _mapper;
         private readonly Cloudinary _cloudinary;
-        
-        public UploadService(
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IImageRepository _imageRepository;
+
+        public ImageService(
             IMapper mapper,
-            IConfiguration configuration
+            IConfiguration configuration,
+            IUnitOfWork unitOfWork,
+            IImageRepository imageRepository
             )
         {
+            _unitOfWork = unitOfWork;
+            _imageRepository = imageRepository;
             _mapper = mapper;
             var cloudinarySection = configuration.GetSection("Cloudinary");
             string cloudName = cloudinarySection.GetSection("CloudName").Value;
@@ -67,7 +67,14 @@ namespace eShopFinalProject.Services.Uploads
                         PublicId = uploadResult.PublicId,
                         Url = uploadResult.Url.ToString()
                     });
+                    await _imageRepository.AddAsync(new Data.Entities.Image()
+                    {
+                        PublicId = uploadResult.PublicId,
+                        Url = uploadResult.Url.ToString()
+                    });
+
                 }
+                await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<List<UploadImageReponse>>(result);
             }
             catch (Exception e)
@@ -95,7 +102,14 @@ namespace eShopFinalProject.Services.Uploads
                     Overwrite = true
                 };
                 ImageUploadResult uploadResult = await _cloudinary.UploadAsync(uploadParams);
-                uploadResult.Url.ToString();
+
+                var result = await _imageRepository.AddAsync(new Data.Entities.Image()
+                {
+                    PublicId = uploadResult.PublicId,
+                    Url = uploadResult.Url.ToString()
+                });
+
+                await _unitOfWork.SaveChangesAsync();
 
                 return new UploadImageReponse()
                 {
@@ -106,6 +120,30 @@ namespace eShopFinalProject.Services.Uploads
             catch (Exception e)
             {
                 throw new Exception(String.Format(Resource.UploadImage_Failed));
+            }
+        }
+
+        public async Task<ResultWrapperDto<bool>> DeleteImage(DeleteImageRequest request)
+        {
+            try
+            {
+                var entity = await _imageRepository.FindAsync(x=>x.PublicId == request.PublicId);
+                var img = entity.FirstOrDefault();
+                if (entity == null)
+                {
+                    return new ResultWrapperDto<bool>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Color));
+                }
+
+                var deletionParams = new DeletionParams(request.PublicId);
+                var result = await _cloudinary.DestroyAsync(deletionParams);
+
+                _imageRepository.Delete(img);
+                await _unitOfWork.SaveChangesAsync();
+                return new ResultWrapperDto<bool>(200, String.Format(Resource.Delete_Succes_Template, Resource.Resource_Image));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(String.Format(Resource.DeleteImage_Failed));
             }
         }
     }

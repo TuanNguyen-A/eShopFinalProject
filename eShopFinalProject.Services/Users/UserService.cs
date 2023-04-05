@@ -2,6 +2,7 @@
 using eShopFinalProject.Data.Entities;
 using eShopFinalProject.Data.Infrastructure;
 using eShopFinalProject.Data.Infrastructure.Interface;
+using eShopFinalProject.Services.Images;
 using eShopFinalProject.Services.Jwts;
 using eShopFinalProject.Services.Mails;
 using eShopFinalProject.Services.Uploads;
@@ -15,6 +16,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Runtime.Versioning;
 using System.Web;
 
 namespace eShopFinalProject.Services.Users
@@ -30,7 +33,7 @@ namespace eShopFinalProject.Services.Users
         private readonly IJwtService _jwtService;
         private readonly IAppUserRepository _appUserRepository;
         private readonly IMailService _mailService;
-        private readonly IUploadService _uploadService;
+        private readonly IImageService _imageService;
 
         public UserService(
             UserManager<AppUser> userManager,
@@ -40,7 +43,7 @@ namespace eShopFinalProject.Services.Users
             IConfiguration config,
             IUnitOfWork unitOfWork,
             IMailService mailService,
-            IUploadService uploadService,
+            IImageService imageService,
             IMapper mapper,
             IJwtService jwtService)
         {
@@ -49,7 +52,7 @@ namespace eShopFinalProject.Services.Users
             _roleManager = roleManager;
             _appUserRepository = appUserRepository;
             _mailService = mailService;
-            _uploadService = uploadService;
+            _imageService = imageService;
             _config = config;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -73,7 +76,7 @@ namespace eShopFinalProject.Services.Users
 
                 if(request.AvatarImage != null)
                 {
-                    var uploadImageResponse = await _uploadService.UploadImage(request.AvatarImage);
+                    var uploadImageResponse = await _imageService.UploadImage(request.AvatarImage);
                     user.Avatar = uploadImageResponse.Url;
                 }
 
@@ -147,6 +150,21 @@ namespace eShopFinalProject.Services.Users
             var token = await _jwtService.CreateTokenAsync(user);
 
             return new ResultWrapperDto<AuthenticationResponse>(token);
+        }
+
+        public async Task<ResultWrapperDto<AppUser>> Signout(string email)
+        {
+            try
+            {
+                var result = _signInManager.SignOutAsync();
+                //var user = await _userManager.FindByEmailAsync(email);
+                //var result = await _userManager.UpdateSecurityStampAsync(user);
+                return new ResultWrapperDto<AppUser>(200, Resource.Signout_Success);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(Resource.Signout_Fail);
+            }
         }
 
         public async Task<ResultWrapperDto<AppUser>> DeleteAsync(IdUserRequest request)

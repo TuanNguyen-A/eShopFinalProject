@@ -49,7 +49,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "10a1865a-a085-45e2-ab6a-ea6ca78f2bbe",
+                            ConcurrencyStamp = "b4e771f8-a6ed-4048-bb6f-9d84c72322ba",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -57,7 +57,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("200d51fd-eae5-4951-9734-f4538c85947d"),
-                            ConcurrencyStamp = "d754e6cc-9372-4590-9811-a6cc025c84b2",
+                            ConcurrencyStamp = "9dca400d-987e-419a-8188-e07f6e402da3",
                             Description = "Seller role",
                             Name = "seller",
                             NormalizedName = "SELLER"
@@ -65,7 +65,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"),
-                            ConcurrencyStamp = "64e2b55f-b3c2-43f3-bf9b-8b7054ef1c64",
+                            ConcurrencyStamp = "ce259c44-0f91-4db5-94f5-8523e8994a1a",
                             Description = "User role",
                             Name = "user",
                             NormalizedName = "USER"
@@ -160,22 +160,22 @@ namespace eShopFinalProject.Data.Migrations
                             AccessFailedCount = 0,
                             Address = "Test Address",
                             Avatar = "TestURL",
-                            ConcurrencyStamp = "d0cb75f2-1560-4348-bb15-7a19af734633",
+                            ConcurrencyStamp = "82c98274-2ad9-4d89-9f99-fc25f15045ab",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "tuan3032001@gmail.com",
+                            Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             FullName = "Tuan Nguyen",
                             IsBlock = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "tuan3032001@gmail.com",
-                            NormalizedUserName = "User 1",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMl1rRNhYnxsMO3itp8BY38D1d8oL5FD6bMyb6X3zwDO34V3mLTb4a1o2gJqToxVeg==",
+                            NormalizedEmail = "admin@gmail.com",
+                            NormalizedUserName = "admin@gmail.com",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFsKk5XIjPVxsYatrIukL6+m6VYUKcftgxeesyKz+OUbNR87ds1KRN56CT2CC+ygkQ==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserName = "User 1"
+                            UserName = "admin@gmail.com"
                         });
                 });
 
@@ -405,6 +405,25 @@ namespace eShopFinalProject.Data.Migrations
                     b.ToTable("Enqs", (string)null);
                 });
 
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.Image", b =>
+                {
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PublicId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Images", (string)null);
+                });
+
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -412,6 +431,22 @@ namespace eShopFinalProject.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ShipAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShipEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShipName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShipPhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -431,12 +466,20 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = 1,
+                            ShipAddress = "123 To Ky",
+                            ShipEmail = "test@gmail.com",
+                            ShipName = "TuanNguyen",
+                            ShipPhoneNumber = "12345678",
                             UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             orderStatus = 0
                         },
                         new
                         {
                             Id = 2,
+                            ShipAddress = "123 To Ky",
+                            ShipEmail = "test@gmail.com",
+                            ShipName = "TuanNguyen",
+                            ShipPhoneNumber = "12345678",
                             UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             orderStatus = 0
                         });
@@ -556,6 +599,12 @@ namespace eShopFinalProject.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
@@ -566,12 +615,16 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             OrderId = 1,
-                            ProductId = 1
+                            ProductId = 1,
+                            Price = 0m,
+                            Quantity = 0
                         },
                         new
                         {
                             OrderId = 2,
-                            ProductId = 2
+                            ProductId = 2,
+                            Price = 0m,
+                            Quantity = 0
                         });
                 });
 
@@ -736,10 +789,20 @@ namespace eShopFinalProject.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.Image", b =>
+                {
+                    b.HasOne("eShopFinalProject.Data.Entities.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Order", b =>
                 {
                     b.HasOne("eShopFinalProject.Data.Entities.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -827,6 +890,8 @@ namespace eShopFinalProject.Data.Migrations
                 {
                     b.Navigation("Blogs");
 
+                    b.Navigation("Orders");
+
                     b.Navigation("ProductRatings");
                 });
 
@@ -854,6 +919,8 @@ namespace eShopFinalProject.Data.Migrations
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Product", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("ProductInColors");
 
                     b.Navigation("ProductInOrders");

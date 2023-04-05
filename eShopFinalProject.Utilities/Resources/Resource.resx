@@ -159,6 +159,12 @@
   <data name="Create_Succes_Template" xml:space="preserve">
     <value>Creating {0} success</value>
   </data>
+  <data name="DeleteImage_Failed" xml:space="preserve">
+    <value>Deleting Image is failed</value>
+  </data>
+  <data name="DeleteImage_Success" xml:space="preserve">
+    <value>Deleting Image is success</value>
+  </data>
   <data name="Delete_Succes_Template" xml:space="preserve">
     <value>Delete {0} success</value>
   </data>
@@ -192,6 +198,9 @@
   <data name="Resource_Enq" xml:space="preserve">
     <value>Enquiry</value>
   </data>
+  <data name="Resource_Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
   <data name="Resource_Order" xml:space="preserve">
     <value>Order</value>
   </data>
@@ -203,6 +212,12 @@
   </data>
   <data name="Resource_User" xml:space="preserve">
     <value>User</value>
+  </data>
+  <data name="Signout_Fail" xml:space="preserve">
+    <value>Sign out fail</value>
+  </data>
+  <data name="Signout_Success" xml:space="preserve">
+    <value>Sign out success</value>
   </data>
   <data name="Update_Succes_Template" xml:space="preserve">
     <value>Update {0} success</value>

@@ -17,9 +17,12 @@ namespace eShopFinalProject.Data.Configurations
             builder.ToTable("Orders");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.orderStatus).HasDefaultValue(OrderStatus.NotProcessed);
+            builder.Property(x => x.ShipAddress).IsRequired();
+            builder.Property(x => x.ShipEmail).IsRequired();
+            builder.Property(x => x.ShipName).IsRequired();
+            builder.Property(x => x.ShipPhoneNumber).IsRequired();
 
-
-
+            builder.HasOne(x => x.User).WithMany(u => u.Orders).HasForeignKey(o => o.UserId);
         }
     }
 }

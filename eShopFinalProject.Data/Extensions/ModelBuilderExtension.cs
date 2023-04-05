@@ -49,7 +49,7 @@ namespace eShopFinalProject.Data.Extensions
             var hasher = new PasswordHasher<AppUser>();
             modelBuilder.Entity<AppUser>().HasData(new AppUser
             {
-                Id = roleAdminId,
+                Id = userId,
                 UserName = "admin@gmail.com",
                 NormalizedUserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
@@ -147,12 +147,20 @@ namespace eShopFinalProject.Data.Extensions
                 {
                     Id = 1,
                     UserId = userId,
+                    ShipAddress = "123 To Ky",
+                    ShipEmail = "test@gmail.com",
+                    ShipPhoneNumber = "12345678",
+                    ShipName = "TuanNguyen",
                     orderStatus = OrderStatus.NotProcessed
                 },
                 new Order()
                 {
                     Id = 2,
                     UserId = userId,
+                    ShipAddress = "123 To Ky",
+                    ShipEmail = "test@gmail.com",
+                    ShipPhoneNumber = "12345678",
+                    ShipName = "TuanNguyen",
                     orderStatus = OrderStatus.NotProcessed
                 });
 
