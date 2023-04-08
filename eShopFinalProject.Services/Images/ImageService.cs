@@ -40,12 +40,12 @@ namespace eShopFinalProject.Services.Uploads
             _cloudinary.Api.Secure = true;
         }
 
-        public async Task<ResultWrapperDto<List<UploadImageReponse>>> UploadProductImage(IFormFileCollection images)
+        public async Task<ResultWrapperDto<List<ImageVM>>> UploadImageList(IFormFileCollection images)
         {
             try
             {
                 MemoryStream ms;
-                var result = new List<UploadImageReponse>() { } ;
+                var result = new List<ImageVM>() { } ;
                 foreach (var img in images)
                 {
                     ms = new MemoryStream();
@@ -62,7 +62,7 @@ namespace eShopFinalProject.Services.Uploads
                     };
                     ImageUploadResult uploadResult = await _cloudinary.UploadAsync(uploadParams);
                     uploadResult.Url.ToString();
-                    result.Add(new UploadImageReponse()
+                    result.Add(new ImageVM()
                     {
                         PublicId = uploadResult.PublicId,
                         Url = uploadResult.Url.ToString()
@@ -75,7 +75,7 @@ namespace eShopFinalProject.Services.Uploads
 
                 }
                 await _unitOfWork.SaveChangesAsync();
-                return new ResultWrapperDto<List<UploadImageReponse>>(result);
+                return new ResultWrapperDto<List<ImageVM>>(result);
             }
             catch (Exception e)
             {
@@ -83,7 +83,7 @@ namespace eShopFinalProject.Services.Uploads
             }
         }
 
-        public async Task<UploadImageReponse> UploadImage(IFormFile image)
+        public async Task<ImageVM> UploadImage(IFormFile image)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace eShopFinalProject.Services.Uploads
 
                 await _unitOfWork.SaveChangesAsync();
 
-                return new UploadImageReponse()
+                return new ImageVM()
                 {
                     PublicId = uploadResult.PublicId,
                     Url = uploadResult.Url.ToString()

@@ -12,7 +12,7 @@ using eShopFinalProject.Data.EF;
 namespace eShopFinalProject.Data.Migrations
 {
     [DbContext(typeof(eShopDbContext))]
-    [Migration("20230405140451_init")]
+    [Migration("20230408072634_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "b4e771f8-a6ed-4048-bb6f-9d84c72322ba",
+                            ConcurrencyStamp = "351f5ffa-3822-4b5e-87f4-bea857b13ab6",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -59,7 +59,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("200d51fd-eae5-4951-9734-f4538c85947d"),
-                            ConcurrencyStamp = "9dca400d-987e-419a-8188-e07f6e402da3",
+                            ConcurrencyStamp = "badd9b04-8638-466c-9de6-ec7ba0c91104",
                             Description = "Seller role",
                             Name = "seller",
                             NormalizedName = "SELLER"
@@ -67,7 +67,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"),
-                            ConcurrencyStamp = "ce259c44-0f91-4db5-94f5-8523e8994a1a",
+                            ConcurrencyStamp = "8860d435-b7fb-460e-9c23-3500c2958a02",
                             Description = "User role",
                             Name = "user",
                             NormalizedName = "USER"
@@ -162,7 +162,7 @@ namespace eShopFinalProject.Data.Migrations
                             AccessFailedCount = 0,
                             Address = "Test Address",
                             Avatar = "TestURL",
-                            ConcurrencyStamp = "82c98274-2ad9-4d89-9f99-fc25f15045ab",
+                            ConcurrencyStamp = "f891cb27-519b-4117-adaa-05621f18aa00",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -171,7 +171,7 @@ namespace eShopFinalProject.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFsKk5XIjPVxsYatrIukL6+m6VYUKcftgxeesyKz+OUbNR87ds1KRN56CT2CC+ygkQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBVgx9XUTmB75PWiNXXjYkGoiK2M20O20H2JrgEn1dOPNg6gdLlvg6B9hrR3AxDO8Q==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -412,6 +412,9 @@ namespace eShopFinalProject.Data.Migrations
                     b.Property<string>("PublicId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("BlogId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
@@ -421,9 +424,13 @@ namespace eShopFinalProject.Data.Migrations
 
                     b.HasKey("PublicId");
 
+                    b.HasIndex("BlogId");
+
                     b.HasIndex("ProductId");
 
                     b.ToTable("Images", (string)null);
+
+                    b.HasCheckConstraint("CK_Images_FK", "(ProductId IS NULL OR BlogId IS NULL)");
                 });
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Order", b =>
@@ -520,6 +527,9 @@ namespace eShopFinalProject.Data.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
+                    b.Property<int>("Tag")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -548,6 +558,7 @@ namespace eShopFinalProject.Data.Migrations
                             Quantity = 20,
                             Slug = "seed-product-1",
                             Sold = 0,
+                            Tag = 0,
                             Title = "Seed Product 1",
                             TotalRating = 1
                         },
@@ -561,6 +572,7 @@ namespace eShopFinalProject.Data.Migrations
                             Quantity = 20,
                             Slug = "seed-product-2",
                             Sold = 0,
+                            Tag = 0,
                             Title = "Seed Product 2",
                             TotalRating = 4
                         });
@@ -793,10 +805,17 @@ namespace eShopFinalProject.Data.Migrations
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Image", b =>
                 {
+                    b.HasOne("eShopFinalProject.Data.Entities.Blog", "Blog")
+                        .WithMany("Images")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("eShopFinalProject.Data.Entities.Product", "Product")
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Blog");
 
                     b.Navigation("Product");
                 });
@@ -895,6 +914,11 @@ namespace eShopFinalProject.Data.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("ProductRatings");
+                });
+
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.Blog", b =>
+                {
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Brand", b =>

@@ -23,6 +23,7 @@ namespace eShopFinalProject.Services.Products
         private readonly IBrandRepository _brandRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IColorRepository _colorRepository;
+        private readonly IImageRepository _imageRepository;
         private readonly IProductInColorRepository _productInColorRepository;
 
         public ProductService(
@@ -32,6 +33,7 @@ namespace eShopFinalProject.Services.Products
             ICategoryRepository categoryRepository,
             IColorRepository colorRepository,
             IProductInColorRepository productInColorRepository,
+            IImageRepository imageRepository,
             IMapper mapper
             )
         {
@@ -39,6 +41,7 @@ namespace eShopFinalProject.Services.Products
             _categoryRepository = categoryRepository;
             _colorRepository = colorRepository;
             _productRepository = productRepository;
+            _imageRepository = imageRepository;
             _productInColorRepository = productInColorRepository;
 
             _unitOfWork = unitOfWork;
@@ -109,10 +112,30 @@ namespace eShopFinalProject.Services.Products
                     return new ResultWrapperDto<Product>(400, Resource.Product_Existed);
                 }
 
-                var color = await _colorRepository.GetAsync(request.ColorId);
-                if (color == null)
+                //Validate Color
+                List<Color> colorList = new List<Color>() { };
+                foreach( int id in request.Colors)
                 {
-                    return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Color));
+                    var color = await _colorRepository.GetAsync(id);
+                    if (color == null)
+                    {
+                        return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Color));
+                    }
+
+                    colorList.Add(color);
+                }
+
+                //Validate Image
+                List<Image> imageList = new List<Image>() { };
+                foreach (string publicId in request.Images)
+                {
+                    var image = await _imageRepository.FindAsync(x => x.PublicId == publicId);
+                    if (!image.Any())
+                    {
+                        return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Image));
+                    }
+
+                    imageList.Add(image.FirstOrDefault());
                 }
 
                 var brand = await _brandRepository.GetAsync(request.BrandId);
@@ -128,16 +151,28 @@ namespace eShopFinalProject.Services.Products
                 }
 
                 Product entity = _mapper.Map<Product>(request);
+                entity.Slug = request.Title.Slugify();
+
                 await _productRepository.AddAsync(entity);
 
-
-                ProductInColor pic = new ProductInColor()
+                //Add Color
+                foreach(Color c in colorList)
                 {
-                    Product = entity,
-                    Color = color
-                };
+                    ProductInColor pic = new ProductInColor()
+                    {
+                        Product = entity,
+                        Color = c
+                    };
 
-                await _productInColorRepository.AddAsync(pic);
+                    await _productInColorRepository.AddAsync(pic);
+                }
+
+                //Add Image
+                foreach (Image image in imageList)
+                {
+                    image.Product = entity;
+                }
+
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Product>(201, String.Format(Resource.Create_Succes_Template, Resource.Resource_Product));
             }

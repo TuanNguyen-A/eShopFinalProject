@@ -23,6 +23,9 @@ namespace eShopFinalProject.Data.Configurations
 
             builder.HasOne(x => x.User).WithMany(u => u.Blogs).HasForeignKey(b => b.UserId);
             builder.HasOne(x => x.Category).WithMany(u => u.Blogs).HasForeignKey(b => b.CategoryId);
+            builder.HasMany(e => e.Images)
+              .WithOne(e => e.Blog)
+              .HasForeignKey(e => e.BlogId);
         }
     }
 }

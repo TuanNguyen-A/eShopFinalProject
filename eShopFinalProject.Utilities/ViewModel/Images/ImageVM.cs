@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace eShopFinalProject.Utilities.ViewModel.Uploads
 {
-    public class UploadImageReponse
+    public class ImageVM
     {
         public string PublicId { get; set; }
         public string Url { get; set; }

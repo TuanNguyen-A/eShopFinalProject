@@ -12,8 +12,8 @@ namespace eShopFinalProject.Services.Images
 {
     public interface IImageService
     {
-        Task<ResultWrapperDto<List<UploadImageReponse>>> UploadProductImage(IFormFileCollection images);
-        Task<UploadImageReponse> UploadImage(IFormFile image);
+        Task<ResultWrapperDto<List<ImageVM>>> UploadImageList(IFormFileCollection images);
+        Task<ImageVM> UploadImage(IFormFile image);
         Task<ResultWrapperDto<bool>> DeleteImage(DeleteImageRequest request);
     }
 }

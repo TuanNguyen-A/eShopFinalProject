@@ -33,7 +33,9 @@ namespace eShopFinalProject.Data.Configurations
             //Relationship
             builder.HasOne(x => x.Brand).WithMany(b => b.Products).HasForeignKey(p => p.BrandId);
             builder.HasOne(x => x.Category).WithMany(c => c.Products).HasForeignKey(p => p.CategoryId);
-
+            builder.HasMany(e => e.Images)
+              .WithOne(e => e.Product)
+              .HasForeignKey(e => e.ProductId);
         }
     }
 }

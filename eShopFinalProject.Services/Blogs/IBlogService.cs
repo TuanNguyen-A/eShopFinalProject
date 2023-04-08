@@ -15,7 +15,7 @@ namespace eShopFinalProject.Services.Blogs
     {
         Task<ResultWrapperDto<PagingResult<BlogVM>>> GetAllAsync(PagingGetAllRequest req);
         Task<ResultWrapperDto<BlogVM>> GetAsync(int id);
-        Task<ResultWrapperDto<Blog>> CreateAsync(CreateBlogRequest request);
+        Task<ResultWrapperDto<Blog>> CreateAsync(CreateBlogRequest request, string email);
         Task<ResultWrapperDto<Blog>> UpdateAsync(UpdateBlogRequest request);
         Task<ResultWrapperDto<Blog>> DeleteAsync(DeleteBlogRequest request);
     }

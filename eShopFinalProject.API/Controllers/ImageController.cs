@@ -17,12 +17,12 @@ namespace eShopFinalProject.API.Controllers
             _imageService = imageService;
         }
 
-        [HttpPost("product-images")]
+        [HttpPost("upload-images")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> UploadProductImage()
+        public async Task<IActionResult> UploadImageList()
         {
             var files = HttpContext.Request.Form.Files;
-            var result = await _imageService.UploadProductImage(files);
+            var result = await _imageService.UploadImageList(files);
             return result.StatusCode != 200 ?
                 StatusCode(result.StatusCode, result.Message) :
                 Ok(result.Dto);

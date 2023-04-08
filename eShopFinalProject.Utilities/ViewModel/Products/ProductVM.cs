@@ -1,11 +1,13 @@
 ﻿using eShopFinalProject.Utilities.ViewModel.Brands;
 using eShopFinalProject.Utilities.ViewModel.Categories;
 using eShopFinalProject.Utilities.ViewModel.Colors;
+using eShopFinalProject.Utilities.ViewModel.Uploads;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace eShopFinalProject.Utilities.ViewModel.Products
 {
@@ -18,8 +20,10 @@ namespace eShopFinalProject.Utilities.ViewModel.Products
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         public int Sold { get; set; }
+        public string Tag { get; set; }
         public List<ColorVM> Colors { get; set; }
         public BrandVM Brand { get; set; }
         public CategoryVM Category { get; set; }
+        public List<ImageVM> Images { get; set; }
     }
 }

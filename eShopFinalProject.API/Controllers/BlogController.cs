@@ -1,5 +1,6 @@
 ﻿using eShopFinalProject.Services.Blogs;
 using eShopFinalProject.Services.Brands;
+using eShopFinalProject.Utilities.Common;
 using eShopFinalProject.Utilities.ViewModel.Blogs;
 using eShopFinalProject.Utilities.ViewModel.Brands;
 using eShopFinalProject.Utilities.ViewModel.Page;
@@ -7,6 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Security.Claims;
 
 namespace eShopFinalProject.API.Controllers
 {
@@ -42,9 +46,13 @@ namespace eShopFinalProject.API.Controllers
 
         [HttpPost("add")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Add([FromBody] CreateBlogRequest request)
+        public async Task<IActionResult> Add([FromBody] CreateBlogRequest request, [FromHeader(Name = "Authorization")] string authorization)
         {
-            var result = await _blogService.CreateAsync(request);
+            JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
+            object email;
+            jwtToken.Payload.TryGetValue(ClaimTypes.Email, out email);
+
+            var result = await _blogService.CreateAsync(request, (string)email);
             return StatusCode(result.StatusCode, result.Message);
         }
 

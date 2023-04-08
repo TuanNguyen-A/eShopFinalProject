@@ -7,6 +7,7 @@ using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.ViewModel.Coupons;
 using eShopFinalProject.Utilities.ViewModel.Enqs;
 using eShopFinalProject.Utilities.ViewModel.Products;
+using eShopFinalProject.Utilities.ViewModel.Uploads;
 using eShopFinalProject.Utilities.ViewModel.Users;
 
 namespace eShopFinalProject.API
@@ -31,19 +32,24 @@ namespace eShopFinalProject.API
             CreateMap<UpdateCouponRequest, Coupon>();
             CreateMap<Coupon, CouponVM>();
 
-            CreateMap<CreateBlogRequest, Blog>();
+            CreateMap<CreateBlogRequest, Blog>()
+                .ForMember(dest => dest.Images, opt => opt.Ignore());
             CreateMap<Blog, BlogVM>();
 
             CreateMap<CreateEnqRequest, Enq>();
             CreateMap<Enq, EnqVM>();
 
-            CreateMap<CreateProductRequest, Product>();
+            CreateMap<CreateProductRequest, Product>()
+                .ForMember(dest => dest.Images, opt => opt.Ignore());
+
             CreateMap<Product, ProductVM>()
                 .ForMember(dest => dest.Colors, 
                 source => source.MapFrom(source=> source.ProductInColors.Select(pic => pic.Color).ToList()));
 
             CreateMap<CreateUserRequest, AppUser>();
             CreateMap<AppUser, UserVM>();
+
+            CreateMap<Image, ImageVM>();
 
         }
     }

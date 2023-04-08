@@ -14,7 +14,8 @@ namespace eShopFinalProject.Data.Entities
         public int NumView { get; set; }
         public Guid UserId { get; set; }
         public int CategoryId { get; set; }
-
+         
+        public virtual List<Image> Images { get; set; }
         public virtual AppUser User { get; set; }
         public virtual Category Category { get; set; }
     }

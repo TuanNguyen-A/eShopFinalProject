@@ -17,11 +17,20 @@ namespace eShopFinalProject.Data.Configurations
             builder.ToTable("Images");
             builder.HasKey(x => x.PublicId);
             builder.Property(x => x.Url).IsRequired();
-            builder.HasOne(x => x.Product)
-                .WithMany(p => p.Images)
-                .HasForeignKey(i=>i.ProductId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.SetNull); ;
+
+            builder.HasOne(e => e.Product)
+              .WithMany(p => p.Images)
+              .HasForeignKey(e => e.ProductId)
+              .IsRequired(false)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(e => e.Blog)
+              .WithMany(b => b.Images)
+              .HasForeignKey(e => e.BlogId)
+              .IsRequired(false)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasCheckConstraint("CK_Images_FK", "(ProductId IS NULL OR BlogId IS NULL)");
         }
     }
 }

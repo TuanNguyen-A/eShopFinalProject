@@ -22,6 +22,7 @@ namespace eShopFinalProject.Data.Infrastructure
             return await _context.Set<Blog>()
                 .Include(i => i.Category)
                 .Include(i => i.User)
+                .Include(i => i.Images)
                 .ToListAsync();
         }
 
@@ -30,6 +31,7 @@ namespace eShopFinalProject.Data.Infrastructure
             return await _context.Set<Blog>()
                 .Include(i => i.Category)
                 .Include(i => i.User)
+                .Include(i => i.Images)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
