@@ -22,6 +22,7 @@ namespace eShopFinalProject.Services.Blogs
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBlogRepository _blogRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IImageRepository _imageRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
@@ -30,16 +31,18 @@ namespace eShopFinalProject.Services.Blogs
             IBlogRepository blogRepository,
             ICategoryRepository categoryRepository,
             UserManager<AppUser> userManager,
+            IImageRepository imageRepository,
             IMapper mapper
             )
         {
             _unitOfWork = unitOfWork;
             _blogRepository = blogRepository;
+            _imageRepository = imageRepository;
             _categoryRepository = categoryRepository;
             _userManager = userManager;
             _mapper = mapper;
         }
-        public async Task<ResultWrapperDto<Blog>> CreateAsync(CreateBlogRequest request)
+        public async Task<ResultWrapperDto<Blog>> CreateAsync(CreateBlogRequest request, string email)
         {
             try
             {
@@ -49,14 +52,31 @@ namespace eShopFinalProject.Services.Blogs
                     return new ResultWrapperDto<Blog>(400, String.Format(Resource.NotFound_Template, Resource.Resource_Category));
                 }
 
-                var user = await _userManager.FindByIdAsync(request.UserId);
-                if (user == null)
+                //Validate Image
+                List<Image> imageList = new List<Image>() { };
+                foreach (string publicId in request.Images)
                 {
-                    return new ResultWrapperDto<Blog>(400, String.Format(Resource.NotFound_Template, Resource.Resource_User));
+                    var image = await _imageRepository.FindAsync(x => x.PublicId == publicId);
+                    if (!image.Any())
+                    {
+                        return new ResultWrapperDto<Blog>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Image));
+                    }
+
+                    imageList.Add(image.FirstOrDefault());
                 }
 
+                var user = await _userManager.FindByEmailAsync(email);
+
                 Blog entity = _mapper.Map<Blog>(request);
+                entity.User = user;
                 var result = await _blogRepository.AddAsync(entity);
+
+                //Add Image
+                foreach (Image image in imageList)
+                {
+                    image.Blog = entity;
+                }
+
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Blog>(201, String.Format(Resource.Create_Succes_Template, Resource.Resource_Blog));
             }

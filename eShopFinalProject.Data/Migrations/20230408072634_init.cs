@@ -264,7 +264,8 @@ namespace eShopFinalProject.Data.Migrations
                     Sold = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     TotalRating = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    BrandId = table.Column<int>(type: "int", nullable: false)
+                    BrandId = table.Column<int>(type: "int", nullable: false),
+                    Tag = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -289,17 +290,25 @@ namespace eShopFinalProject.Data.Migrations
                 {
                     PublicId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true)
+                    ProductId = table.Column<int>(type: "int", nullable: true),
+                    BlogId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.PublicId);
+                    table.CheckConstraint("CK_Images_FK", "(ProductId IS NULL OR BlogId IS NULL)");
+                    table.ForeignKey(
+                        name: "FK_Images_Blogs_BlogId",
+                        column: x => x.BlogId,
+                        principalTable: "Blogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Images_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -383,9 +392,9 @@ namespace eShopFinalProject.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("200d51fd-eae5-4951-9734-f4538c85947d"), "9dca400d-987e-419a-8188-e07f6e402da3", "Seller role", "seller", "SELLER" },
-                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "ce259c44-0f91-4db5-94f5-8523e8994a1a", "User role", "user", "USER" },
-                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "b4e771f8-a6ed-4048-bb6f-9d84c72322ba", "Administrator role", "admin", "ADMIN" }
+                    { new Guid("200d51fd-eae5-4951-9734-f4538c85947d"), "badd9b04-8638-466c-9de6-ec7ba0c91104", "Seller role", "seller", "SELLER" },
+                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "8860d435-b7fb-460e-9c23-3500c2958a02", "User role", "user", "USER" },
+                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "351f5ffa-3822-4b5e-87f4-bea857b13ab6", "Administrator role", "admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -396,7 +405,7 @@ namespace eShopFinalProject.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AppUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Avatar", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedDate", "UserName", "ZipCode" },
-                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "TestURL", "82c98274-2ad9-4d89-9f99-fc25f15045ab", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Tuan Nguyen", false, null, "admin@gmail.com", "admin@gmail.com", "AQAAAAEAACcQAAAAEFsKk5XIjPVxsYatrIukL6+m6VYUKcftgxeesyKz+OUbNR87ds1KRN56CT2CC+ygkQ==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", null });
+                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "TestURL", "f891cb27-519b-4117-adaa-05621f18aa00", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Tuan Nguyen", false, null, "admin@gmail.com", "admin@gmail.com", "AQAAAAEAACcQAAAAEBVgx9XUTmB75PWiNXXjYkGoiK2M20O20H2JrgEn1dOPNg6gdLlvg6B9hrR3AxDO8Q==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", null });
 
             migrationBuilder.InsertData(
                 table: "Brands",
@@ -454,11 +463,11 @@ namespace eShopFinalProject.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "BrandId", "CategoryId", "Description", "Price", "Quantity", "Slug", "Title", "TotalRating" },
+                columns: new[] { "Id", "BrandId", "CategoryId", "Description", "Price", "Quantity", "Slug", "Tag", "Title", "TotalRating" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, "This is seed data", 10m, 20, "seed-product-1", "Seed Product 1", 1 },
-                    { 2, 2, 2, "This is seed data", 10m, 20, "seed-product-2", "Seed Product 2", 4 }
+                    { 1, 1, 1, "This is seed data", 10m, 20, "seed-product-1", 0, "Seed Product 1", 1 },
+                    { 2, 2, 2, "This is seed data", 10m, 20, "seed-product-2", 0, "Seed Product 2", 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -517,6 +526,11 @@ namespace eShopFinalProject.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Images_BlogId",
+                table: "Images",
+                column: "BlogId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Images_ProductId",
                 table: "Images",
                 column: "ProductId");
@@ -573,9 +587,6 @@ namespace eShopFinalProject.Data.Migrations
                 name: "AppUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Blogs");
-
-            migrationBuilder.DropTable(
                 name: "Coupons");
 
             migrationBuilder.DropTable(
@@ -592,6 +603,9 @@ namespace eShopFinalProject.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductRatings");
+
+            migrationBuilder.DropTable(
+                name: "Blogs");
 
             migrationBuilder.DropTable(
                 name: "Colors");

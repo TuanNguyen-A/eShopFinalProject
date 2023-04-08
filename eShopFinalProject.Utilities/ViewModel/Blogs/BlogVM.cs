@@ -1,4 +1,5 @@
 ﻿using eShopFinalProject.Utilities.ViewModel.Categories;
+using eShopFinalProject.Utilities.ViewModel.Uploads;
 using eShopFinalProject.Utilities.ViewModel.Users;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ namespace eShopFinalProject.Utilities.ViewModel.Blogs
         public int NumView { get; set; }
         public UserVM User { get; set; }
         public CategoryVM Category { get; set; }
+        public List<ImageVM> Images { get; set; }
     }
 }
