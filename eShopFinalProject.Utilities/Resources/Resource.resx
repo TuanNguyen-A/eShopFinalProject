@@ -186,6 +186,9 @@
   <data name="Resource_Brand" xml:space="preserve">
     <value>Brand</value>
   </data>
+  <data name="Resource_Cart" xml:space="preserve">
+    <value>Cart</value>
+  </data>
   <data name="Resource_Category" xml:space="preserve">
     <value>Category</value>
   </data>

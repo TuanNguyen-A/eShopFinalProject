@@ -21,16 +21,14 @@ namespace eShopFinalProject.Data.Configurations
             builder.HasOne(e => e.Product)
               .WithMany(p => p.Images)
               .HasForeignKey(e => e.ProductId)
-              .IsRequired(false)
-              .OnDelete(DeleteBehavior.Cascade);
+              .IsRequired(false);
 
             builder.HasOne(e => e.Blog)
               .WithMany(b => b.Images)
               .HasForeignKey(e => e.BlogId)
-              .IsRequired(false)
-              .OnDelete(DeleteBehavior.Restrict);
+              .IsRequired(false);
 
-            builder.HasCheckConstraint("CK_Images_FK", "(ProductId IS NULL OR BlogId IS NULL)");
+            //builder.HasCheckConstraint("CK_Images_FK", "(ProductId IS NULL OR BlogId IS NULL)");
         }
     }
 }

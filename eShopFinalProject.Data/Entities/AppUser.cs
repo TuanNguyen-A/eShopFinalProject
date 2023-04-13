@@ -19,6 +19,7 @@ namespace eShopFinalProject.Data.Entities
         public virtual List<ProductRating> ProductRatings { get; set; }
         public virtual List<Blog> Blogs { get; set; }
         public virtual List<Order> Orders { get; set; }
+        public virtual Cart Cart { get; set; }
 
     }
 }

@@ -142,27 +142,6 @@ namespace eShopFinalProject.Data.Extensions
                     CategoryId = 2
                 });
 
-            modelBuilder.Entity<Order>().HasData(
-                new Order()
-                {
-                    Id = 1,
-                    UserId = userId,
-                    ShipAddress = "123 To Ky",
-                    ShipEmail = "test@gmail.com",
-                    ShipPhoneNumber = "12345678",
-                    ShipName = "TuanNguyen",
-                    orderStatus = OrderStatus.NotProcessed
-                },
-                new Order()
-                {
-                    Id = 2,
-                    UserId = userId,
-                    ShipAddress = "123 To Ky",
-                    ShipEmail = "test@gmail.com",
-                    ShipPhoneNumber = "12345678",
-                    ShipName = "TuanNguyen",
-                    orderStatus = OrderStatus.NotProcessed
-                });
 
             modelBuilder.Entity<Product>().HasData(
                new Product()
@@ -204,18 +183,6 @@ namespace eShopFinalProject.Data.Extensions
                     ColorId = 2
                 });
 
-            modelBuilder.Entity<ProductInOrder>().HasData(
-                new ProductInOrder()
-                {
-                    ProductId = 1,
-                    OrderId = 1
-                },
-                new ProductInOrder()
-                {
-                    ProductId = 2,
-                    OrderId = 2
-                });
-
             modelBuilder.Entity<ProductRating>().HasData(
                 new ProductRating()
                 {
@@ -231,8 +198,6 @@ namespace eShopFinalProject.Data.Extensions
                     Star = 4,
                     Comment = "Nice"
                 });
-
-
         }
     }
 }

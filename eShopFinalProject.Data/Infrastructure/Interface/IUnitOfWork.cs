@@ -17,9 +17,11 @@ namespace eShopFinalProject.Data.Infrastructure.Interface
         IBaseRepository<Color> ColorRepository { get; }
         IBaseRepository<Coupon> CouponRepository { get; }
         IBaseRepository<Order> OrderRepository { get; }
+        IBaseRepository<Cart> CartRepository { get; }
         IBaseRepository<Product> ProductRepository { get; }
         IBaseRepository<ProductInColor> ProductInColorRepository { get; }
         IBaseRepository<ProductInOrder> ProductInOrderRepository { get; }
+        IBaseRepository<ProductInCart> ProductInCartRepository { get; }
         IBaseRepository<ProductRating> ProductRatingRepository { get; }
         void SaveChanges();
         Task SaveChangesAsync();

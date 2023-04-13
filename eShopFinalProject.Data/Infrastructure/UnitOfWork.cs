@@ -21,9 +21,11 @@ namespace eShopFinalProject.Data.Infrastructure
         private IBaseRepository<Color> _colorRepository;
         private IBaseRepository<Coupon> _couponRepository;
         private IBaseRepository<Order> _orderRepository;
+        private IBaseRepository<Cart> _cartRepository;
         private IBaseRepository<Product> _productRepository;
         private IBaseRepository<ProductInColor> _productInColorRepository;
         private IBaseRepository<ProductInOrder> _productInOrderRepository;
+        private IBaseRepository<ProductInCart> _productInCartRepository;
         private IBaseRepository<ProductRating> _productRatingRepository;
         #endregion
 
@@ -139,6 +141,19 @@ namespace eShopFinalProject.Data.Infrastructure
             }
         }
 
+        public IBaseRepository<Cart> CartRepository
+        {
+            get
+            {
+                if (_cartRepository == null)
+                {
+                    _cartRepository = new CartRepository(_context);
+                }
+
+                return _cartRepository;
+            }
+        }
+
         public IBaseRepository<Product> ProductRepository
         {
             get
@@ -175,6 +190,19 @@ namespace eShopFinalProject.Data.Infrastructure
                 }
 
                 return _productInOrderRepository;
+            }
+        }
+
+        public IBaseRepository<ProductInCart> ProductInCartRepository
+        {
+            get
+            {
+                if (_productInCartRepository == null)
+                {
+                    _productInCartRepository = new ProductInCartRepository(_context);
+                }
+
+                return _productInCartRepository;
             }
         }
 
