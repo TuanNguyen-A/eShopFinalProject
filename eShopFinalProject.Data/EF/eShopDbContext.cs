@@ -32,11 +32,13 @@ namespace eShopFinalProject.Data.EF
             builder.ApplyConfiguration(new ProductConfiguration());
             builder.ApplyConfiguration(new ProductInColorConfiguration());
             builder.ApplyConfiguration(new ProductInOrderConfiguration());
+            builder.ApplyConfiguration(new ProductInCartConfiguration());
             builder.ApplyConfiguration(new ProductRatingConfiguration());
             builder.ApplyConfiguration(new AppUserConfiguration());
             builder.ApplyConfiguration(new AppRoleConfiguration());
             builder.ApplyConfiguration(new EnqConfiguration());
             builder.ApplyConfiguration(new ImageConfiguration());
+            builder.ApplyConfiguration(new CartConfiguration());
 
             //Identity
             builder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
@@ -60,6 +62,7 @@ namespace eShopFinalProject.Data.EF
         public DbSet<Image> Images { get; set; }
         public DbSet<ProductInColor> ProductInColors { get; set; }
         public DbSet<ProductInOrder> ProductInOrders { get; set; }
+        public DbSet<ProductInCart> ProductInCarts { get; set; }
         public DbSet<ProductRating> ProductRatings { get; set; }
     }
 }

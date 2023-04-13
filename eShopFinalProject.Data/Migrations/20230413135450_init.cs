@@ -198,6 +198,25 @@ namespace eShopFinalProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Carts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Carts_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -205,10 +224,8 @@ namespace eShopFinalProject.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     orderStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShipName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShipAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShipEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShipPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Total = table.Column<int>(type: "int", nullable: false),
+                    TotalAfterDiscount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -296,15 +313,37 @@ namespace eShopFinalProject.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.PublicId);
-                    table.CheckConstraint("CK_Images_FK", "(ProductId IS NULL OR BlogId IS NULL)");
                     table.ForeignKey(
                         name: "FK_Images_Blogs_BlogId",
                         column: x => x.BlogId,
                         principalTable: "Blogs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Images_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductInCarts",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    CartId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductInCarts", x => new { x.CartId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_ProductInCarts_Carts_CartId",
+                        column: x => x.CartId,
+                        principalTable: "Carts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductInCarts_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -392,9 +431,9 @@ namespace eShopFinalProject.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("200d51fd-eae5-4951-9734-f4538c85947d"), "badd9b04-8638-466c-9de6-ec7ba0c91104", "Seller role", "seller", "SELLER" },
-                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "8860d435-b7fb-460e-9c23-3500c2958a02", "User role", "user", "USER" },
-                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "351f5ffa-3822-4b5e-87f4-bea857b13ab6", "Administrator role", "admin", "ADMIN" }
+                    { new Guid("200d51fd-eae5-4951-9734-f4538c85947d"), "ad1e353d-958a-4dd3-9f9a-4e3a9dd57a34", "Seller role", "seller", "SELLER" },
+                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "88fbbadb-017e-4caa-b9b5-ff96b047b123", "User role", "user", "USER" },
+                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "0803125e-38aa-4f0a-a940-9bc2d1926f53", "Administrator role", "admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -405,7 +444,7 @@ namespace eShopFinalProject.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AppUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Avatar", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedDate", "UserName", "ZipCode" },
-                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "TestURL", "f891cb27-519b-4117-adaa-05621f18aa00", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Tuan Nguyen", false, null, "admin@gmail.com", "admin@gmail.com", "AQAAAAEAACcQAAAAEBVgx9XUTmB75PWiNXXjYkGoiK2M20O20H2JrgEn1dOPNg6gdLlvg6B9hrR3AxDO8Q==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", null });
+                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "TestURL", "e68820b6-9650-4f98-9e00-5012668c3a92", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Tuan Nguyen", false, null, "admin@gmail.com", "admin@gmail.com", "AQAAAAEAACcQAAAAEGiXWZ2N5wFxMM1vHJJKjdRKmYL9ut3GDJsQmibIcLiikIRtYg4s2o0DsIaHiAV1zQ==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", null });
 
             migrationBuilder.InsertData(
                 table: "Brands",
@@ -453,15 +492,6 @@ namespace eShopFinalProject.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Orders",
-                columns: new[] { "Id", "ShipAddress", "ShipEmail", "ShipName", "ShipPhoneNumber", "UserId" },
-                values: new object[,]
-                {
-                    { 1, "123 To Ky", "test@gmail.com", "TuanNguyen", "12345678", new Guid("69bd714f-9576-45ba-b5b7-f00649be00de") },
-                    { 2, "123 To Ky", "test@gmail.com", "TuanNguyen", "12345678", new Guid("69bd714f-9576-45ba-b5b7-f00649be00de") }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "BrandId", "CategoryId", "Description", "Price", "Quantity", "Slug", "Tag", "Title", "TotalRating" },
                 values: new object[,]
@@ -477,15 +507,6 @@ namespace eShopFinalProject.Data.Migrations
                 {
                     { 1, 1 },
                     { 2, 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ProductInOrders",
-                columns: new[] { "OrderId", "ProductId", "Price", "Quantity" },
-                values: new object[,]
-                {
-                    { 1, 1, 0m, 0 },
-                    { 2, 2, 0m, 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -506,6 +527,12 @@ namespace eShopFinalProject.Data.Migrations
                 name: "IX_Blogs_UserId",
                 table: "Blogs",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Carts_UserId",
+                table: "Carts",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_Title",
@@ -539,6 +566,11 @@ namespace eShopFinalProject.Data.Migrations
                 name: "IX_Orders_UserId",
                 table: "Orders",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductInCarts_ProductId",
+                table: "ProductInCarts",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductInColors_ProductId",
@@ -596,6 +628,9 @@ namespace eShopFinalProject.Data.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
+                name: "ProductInCarts");
+
+            migrationBuilder.DropTable(
                 name: "ProductInColors");
 
             migrationBuilder.DropTable(
@@ -606,6 +641,9 @@ namespace eShopFinalProject.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Blogs");
+
+            migrationBuilder.DropTable(
+                name: "Carts");
 
             migrationBuilder.DropTable(
                 name: "Colors");

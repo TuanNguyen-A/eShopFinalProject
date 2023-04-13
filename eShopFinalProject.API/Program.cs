@@ -27,6 +27,7 @@ using eShopFinalProject.Utilities.ViewModel.Mails;
 using Microsoft.Extensions.Configuration;
 using eShopFinalProject.Services.Mails;
 using eShopFinalProject.Services.Images;
+using eShopFinalProject.Services.Carts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -96,6 +97,7 @@ builder.Services.AddTransient<IEnqService, EnqService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddTransient<IMailService, MailService>();
+builder.Services.AddTransient<ICartService, CartService>();
 
 builder.Services.AddTransient<IAppRoleRepository, AppRoleRepository>();
 builder.Services.AddTransient<IAppUserRepository, AppUserRepository>();
@@ -105,8 +107,10 @@ builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<IColorRepository, ColorRepository>();
 builder.Services.AddTransient<ICouponRepository, CouponRepository>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddTransient<IProductInColorRepository, ProductInColorRepository>();
 builder.Services.AddTransient<IProductInOrderRepository, ProductInOrderRepository>();
+builder.Services.AddTransient<IProductInCartRepository, ProductInCartRepository>();
 builder.Services.AddTransient<IProductRatingRepository, ProductRatingRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IEnqRepository, EnqRepository>();

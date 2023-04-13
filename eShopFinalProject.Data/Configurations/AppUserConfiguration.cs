@@ -19,6 +19,10 @@ namespace eShopFinalProject.Data.Configurations
             builder.Property(x => x.Email).IsRequired();
             builder.Property(x => x.Address).IsRequired();
             builder.Property(x => x.IsBlock).HasDefaultValue(false);
+            builder.HasOne(u => u.Cart)
+                .WithOne(c => c.User)
+                .HasForeignKey<Cart>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -12,7 +12,7 @@ using eShopFinalProject.Data.EF;
 namespace eShopFinalProject.Data.Migrations
 {
     [DbContext(typeof(eShopDbContext))]
-    [Migration("20230408072634_init")]
+    [Migration("20230413135450_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "351f5ffa-3822-4b5e-87f4-bea857b13ab6",
+                            ConcurrencyStamp = "0803125e-38aa-4f0a-a940-9bc2d1926f53",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -59,7 +59,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("200d51fd-eae5-4951-9734-f4538c85947d"),
-                            ConcurrencyStamp = "badd9b04-8638-466c-9de6-ec7ba0c91104",
+                            ConcurrencyStamp = "ad1e353d-958a-4dd3-9f9a-4e3a9dd57a34",
                             Description = "Seller role",
                             Name = "seller",
                             NormalizedName = "SELLER"
@@ -67,7 +67,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"),
-                            ConcurrencyStamp = "8860d435-b7fb-460e-9c23-3500c2958a02",
+                            ConcurrencyStamp = "88fbbadb-017e-4caa-b9b5-ff96b047b123",
                             Description = "User role",
                             Name = "user",
                             NormalizedName = "USER"
@@ -162,7 +162,7 @@ namespace eShopFinalProject.Data.Migrations
                             AccessFailedCount = 0,
                             Address = "Test Address",
                             Avatar = "TestURL",
-                            ConcurrencyStamp = "f891cb27-519b-4117-adaa-05621f18aa00",
+                            ConcurrencyStamp = "e68820b6-9650-4f98-9e00-5012668c3a92",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -171,7 +171,7 @@ namespace eShopFinalProject.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBVgx9XUTmB75PWiNXXjYkGoiK2M20O20H2JrgEn1dOPNg6gdLlvg6B9hrR3AxDO8Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGiXWZ2N5wFxMM1vHJJKjdRKmYL9ut3GDJsQmibIcLiikIRtYg4s2o0DsIaHiAV1zQ==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -264,6 +264,25 @@ namespace eShopFinalProject.Data.Migrations
                             Id = 2,
                             Title = "seed brand 2"
                         });
+                });
+
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Category", b =>
@@ -429,8 +448,6 @@ namespace eShopFinalProject.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Images", (string)null);
-
-                    b.HasCheckConstraint("CK_Images_FK", "(ProductId IS NULL OR BlogId IS NULL)");
                 });
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Order", b =>
@@ -441,21 +458,11 @@ namespace eShopFinalProject.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ShipAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Total")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ShipEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShipName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShipPhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TotalAfterDiscount")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -470,28 +477,6 @@ namespace eShopFinalProject.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ShipAddress = "123 To Ky",
-                            ShipEmail = "test@gmail.com",
-                            ShipName = "TuanNguyen",
-                            ShipPhoneNumber = "12345678",
-                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            orderStatus = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ShipAddress = "123 To Ky",
-                            ShipEmail = "test@gmail.com",
-                            ShipName = "TuanNguyen",
-                            ShipPhoneNumber = "12345678",
-                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            orderStatus = 0
-                        });
                 });
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Product", b =>
@@ -578,6 +563,24 @@ namespace eShopFinalProject.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.ProductInCart", b =>
+                {
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductInCarts", (string)null);
+                });
+
             modelBuilder.Entity("eShopFinalProject.Data.Entities.ProductInColor", b =>
                 {
                     b.Property<int>("ColorId")
@@ -624,22 +627,6 @@ namespace eShopFinalProject.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductInOrders", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            OrderId = 1,
-                            ProductId = 1,
-                            Price = 0m,
-                            Quantity = 0
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            ProductId = 2,
-                            Price = 0m,
-                            Quantity = 0
-                        });
                 });
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.ProductRating", b =>
@@ -803,17 +790,26 @@ namespace eShopFinalProject.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.Cart", b =>
+                {
+                    b.HasOne("eShopFinalProject.Data.Entities.AppUser", "User")
+                        .WithOne("Cart")
+                        .HasForeignKey("eShopFinalProject.Data.Entities.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Image", b =>
                 {
                     b.HasOne("eShopFinalProject.Data.Entities.Blog", "Blog")
                         .WithMany("Images")
-                        .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("BlogId");
 
                     b.HasOne("eShopFinalProject.Data.Entities.Product", "Product")
                         .WithMany("Images")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Blog");
 
@@ -848,6 +844,25 @@ namespace eShopFinalProject.Data.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.ProductInCart", b =>
+                {
+                    b.HasOne("eShopFinalProject.Data.Entities.Cart", "Cart")
+                        .WithMany("ProductInCarts")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eShopFinalProject.Data.Entities.Product", "Product")
+                        .WithMany("ProductInCarts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.ProductInColor", b =>
@@ -911,6 +926,9 @@ namespace eShopFinalProject.Data.Migrations
                 {
                     b.Navigation("Blogs");
 
+                    b.Navigation("Cart")
+                        .IsRequired();
+
                     b.Navigation("Orders");
 
                     b.Navigation("ProductRatings");
@@ -924,6 +942,11 @@ namespace eShopFinalProject.Data.Migrations
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Brand", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.Cart", b =>
+                {
+                    b.Navigation("ProductInCarts");
                 });
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Category", b =>
@@ -946,6 +969,8 @@ namespace eShopFinalProject.Data.Migrations
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Product", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("ProductInCarts");
 
                     b.Navigation("ProductInColors");
 
