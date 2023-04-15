@@ -122,6 +122,16 @@ namespace eShopFinalProject.Services.Coupons
             }
         }
 
+        public bool IsValidCoupon(Coupon coupon)
+        {
+            if (coupon.Expiry < DateTime.Now)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public async Task<ResultWrapperDto<Coupon>> UpdateAsync(UpdateCouponRequest request)
         {
             try {
@@ -131,13 +141,11 @@ namespace eShopFinalProject.Services.Coupons
                     return new ResultWrapperDto<Coupon>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Coupon));
                 }
 
-                var existedEntity = await _couponRepository.FindAsync(x => x.Name == request.Name);
-                if (existedEntity.Any())
-                {
-                    return new ResultWrapperDto<Coupon>(400, Resource.Coupon_Existed);
-                }
-
+                
                 foundEntity.Name = request.Name;
+                foundEntity.Expiry = request.Expiry;
+                foundEntity.Discount = request.Discount;
+
                 var result = _couponRepository.Update(foundEntity);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Coupon>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_Coupon));

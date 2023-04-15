@@ -12,5 +12,7 @@ namespace eShopFinalProject.Data.Entities
         public string Name { get; set; }
         public DateTime Expiry { get; set; }
         public int Discount { get; set; }
+
+        public virtual List<Order> Orders { get; set; }
     }
 }

@@ -19,9 +19,9 @@ namespace eShopFinalProject.Data.Extensions
             var roleUserId = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc");
             var roleSellerId = new Guid("200d51fd-eae5-4951-9734-f4538c85947d");
             var userId = new Guid("69BD714F-9576-45BA-B5B7-F00649BE00DE");
+            var adminId = new Guid("1306725c-0eeb-401b-a25e-28dc0e2953ce");
 
             // USER & ROLE
-
             modelBuilder.Entity<AppRole>().HasData(
                 new AppRole
                 {
@@ -49,14 +49,29 @@ namespace eShopFinalProject.Data.Extensions
             var hasher = new PasswordHasher<AppUser>();
             modelBuilder.Entity<AppUser>().HasData(new AppUser
             {
-                Id = userId,
+                Id = adminId,
                 UserName = "admin@gmail.com",
                 NormalizedUserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
                 NormalizedEmail = "admin@gmail.com",
                 Address = "Test Address",
                 EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, "Abcd1234$"),
+                PasswordHash = hasher.HashPassword(null, "123456x@X"),
+                SecurityStamp = string.Empty,
+                FullName = "Tuan Nguyen",
+                PhoneNumber = "123456",
+                Avatar = "TestURL",
+            },
+            new AppUser
+            {
+                Id = userId,
+                UserName = "user@gmail.com",
+                NormalizedUserName = "user@gmail.com",
+                Email = "user@gmail.com",
+                NormalizedEmail = "user@gmail.com",
+                Address = "Test Address",
+                EmailConfirmed = true,
+                PasswordHash = hasher.HashPassword(null, "123456x@X"),
                 SecurityStamp = string.Empty,
                 FullName = "Tuan Nguyen",
                 PhoneNumber = "123456",
@@ -66,6 +81,11 @@ namespace eShopFinalProject.Data.Extensions
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
             {
                 RoleId = roleAdminId,
+                UserId = adminId
+            },
+            new IdentityUserRole<Guid>
+            {
+                RoleId = roleUserId,
                 UserId = userId
             });
 

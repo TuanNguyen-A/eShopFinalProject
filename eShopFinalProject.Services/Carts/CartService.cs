@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using eShopFinalProject.Utilities.ViewModel.Products;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace eShopFinalProject.Services.Carts
 {
@@ -94,6 +95,26 @@ namespace eShopFinalProject.Services.Carts
             catch(Exception ex)
             {
                 throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Update, Resource.Resource_Cart));
+            }
+        }
+
+        public async Task<ResultWrapperDto<CartVM>> GetCart(string? email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                var carts = await _cartRepository.FindAsync(x => x.UserId == user.Id);
+                var cart = carts.FirstOrDefault(); 
+                if (cart == null)
+                {
+                    return new ResultWrapperDto<CartVM>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Cart));
+                }
+                var result = _mapper.Map<CartVM>(cart);
+                return new ResultWrapperDto<CartVM>(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Get, Resource.Resource_Cart));
             }
         }
     }

@@ -19,6 +19,7 @@ namespace eShopFinalProject.Data.Configurations
             builder.Property(x => x.orderStatus).HasDefaultValue(OrderStatus.NotProcessed);
 
             builder.HasOne(x => x.User).WithMany(u => u.Orders).HasForeignKey(o => o.UserId);
+            builder.HasOne(x => x.Coupon).WithMany(c => c.Orders).HasForeignKey(o => o.CouponId).IsRequired(false);
         }
     }
 }

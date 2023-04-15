@@ -76,7 +76,7 @@ namespace eShopFinalProject.Data.Infrastructure
             return await _context.FindAsync<T>(id);
         }
 
-        public async Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate)
+        public virtual async Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
             return await _context.Set<T>()
                 .AsQueryable()

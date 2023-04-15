@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace eShopFinalProject.Utilities.ViewModel.Orders
 {
-    public class CreateOderRequest
+    public class CreateOrderRequest
     {
-
+        public int? CouponId { get; set; }
     }
 }

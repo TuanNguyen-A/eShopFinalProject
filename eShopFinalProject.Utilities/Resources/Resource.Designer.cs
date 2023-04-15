@@ -232,6 +232,15 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coupon is invalid.
+        /// </summary>
+        public static string Invalid_Coupon {
+            get {
+                return ResourceManager.GetString("Invalid_Coupon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is not found.
         /// </summary>
         public static string NotFound_Template {

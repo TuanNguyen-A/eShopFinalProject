@@ -2,6 +2,7 @@
 using eShopFinalProject.Data.Entities;
 using eShopFinalProject.Utilities.ViewModel.Blogs;
 using eShopFinalProject.Utilities.ViewModel.Brands;
+using eShopFinalProject.Utilities.ViewModel.Carts;
 using eShopFinalProject.Utilities.ViewModel.Categories;
 using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.ViewModel.Coupons;
@@ -50,6 +51,10 @@ namespace eShopFinalProject.API
             CreateMap<AppUser, UserVM>();
 
             CreateMap<Image, ImageVM>();
+
+            CreateMap<Cart, CartVM>();
+
+            CreateMap<ProductInCart, ProductInCartVM>();
 
         }
     }

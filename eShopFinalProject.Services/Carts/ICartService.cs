@@ -13,5 +13,6 @@ namespace eShopFinalProject.Services.Carts
     public interface ICartService
     {
         Task<ResultWrapperDto<Cart>> CreateOrUpdate(CreateCartRequest request, string email);
+        Task<ResultWrapperDto<CartVM>> GetCart(string? email);
     }
 }

@@ -217,28 +217,6 @@ namespace eShopFinalProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    orderStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Total = table.Column<int>(type: "int", nullable: false),
-                    TotalAfterDiscount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_AppUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Blogs",
                 columns: table => new
                 {
@@ -299,6 +277,34 @@ namespace eShopFinalProject.Data.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    orderStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CouponId = table.Column<int>(type: "int", nullable: false),
+                    Total = table.Column<int>(type: "int", nullable: false),
+                    TotalAfterDiscount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Coupons_CouponId",
+                        column: x => x.CouponId,
+                        principalTable: "Coupons",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -375,32 +381,6 @@ namespace eShopFinalProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductInOrders",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductInOrders", x => new { x.OrderId, x.ProductId });
-                    table.ForeignKey(
-                        name: "FK_ProductInOrders_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductInOrders_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductRatings",
                 columns: table => new
                 {
@@ -426,25 +406,59 @@ namespace eShopFinalProject.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProductInOrders",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductInOrders", x => new { x.OrderId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_ProductInOrders_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductInOrders_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AppRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("200d51fd-eae5-4951-9734-f4538c85947d"), "ad1e353d-958a-4dd3-9f9a-4e3a9dd57a34", "Seller role", "seller", "SELLER" },
-                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "88fbbadb-017e-4caa-b9b5-ff96b047b123", "User role", "user", "USER" },
-                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "0803125e-38aa-4f0a-a940-9bc2d1926f53", "Administrator role", "admin", "ADMIN" }
+                    { new Guid("200d51fd-eae5-4951-9734-f4538c85947d"), "5f458e59-d1ad-4b95-8b1a-37dd5c1bb2d1", "Seller role", "seller", "SELLER" },
+                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "8fe5674e-710f-41a4-b416-7cef12f9bbd0", "User role", "user", "USER" },
+                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "eadd62dc-24eb-424b-a358-38cbc530c5dd", "Administrator role", "admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AppUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), new Guid("69bd714f-9576-45ba-b5b7-f00649be00de") });
+                values: new object[,]
+                {
+                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), new Guid("1306725c-0eeb-401b-a25e-28dc0e2953ce") },
+                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), new Guid("69bd714f-9576-45ba-b5b7-f00649be00de") }
+                });
 
             migrationBuilder.InsertData(
                 table: "AppUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Avatar", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedDate", "UserName", "ZipCode" },
-                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "TestURL", "e68820b6-9650-4f98-9e00-5012668c3a92", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Tuan Nguyen", false, null, "admin@gmail.com", "admin@gmail.com", "AQAAAAEAACcQAAAAEGiXWZ2N5wFxMM1vHJJKjdRKmYL9ut3GDJsQmibIcLiikIRtYg4s2o0DsIaHiAV1zQ==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", null });
+                values: new object[,]
+                {
+                    { new Guid("1306725c-0eeb-401b-a25e-28dc0e2953ce"), 0, "Test Address", "TestURL", "ef797424-2dc9-4dc9-8fc4-f3ff831023bf", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Tuan Nguyen", false, null, "admin@gmail.com", "admin@gmail.com", "AQAAAAEAACcQAAAAEBLCblUOnteKu8I0HcqqWmycIHVhSolKyYQl4s6H3eWHBvn9tBIl4C99xwi8Ku3o6g==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", null },
+                    { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "TestURL", "b1ffd9cb-f118-4e83-aa3a-a0e4a892aed8", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user@gmail.com", true, "Tuan Nguyen", false, null, "user@gmail.com", "user@gmail.com", "AQAAAAEAACcQAAAAEGvAFOFkYSqQGqx7AMYlgLD1VPbzlW7qWxn3LvNzZ7hm3ZhAyCS5RsDdX+IdFlBatQ==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user@gmail.com", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "Brands",
@@ -563,6 +577,11 @@ namespace eShopFinalProject.Data.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_CouponId",
+                table: "Orders",
+                column: "CouponId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
                 table: "Orders",
                 column: "UserId");
@@ -619,9 +638,6 @@ namespace eShopFinalProject.Data.Migrations
                 name: "AppUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Coupons");
-
-            migrationBuilder.DropTable(
                 name: "Enqs");
 
             migrationBuilder.DropTable(
@@ -656,6 +672,9 @@ namespace eShopFinalProject.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AppUsers");
+
+            migrationBuilder.DropTable(
+                name: "Coupons");
 
             migrationBuilder.DropTable(
                 name: "Brands");
