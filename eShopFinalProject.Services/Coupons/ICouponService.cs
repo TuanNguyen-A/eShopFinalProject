@@ -18,5 +18,7 @@ namespace eShopFinalProject.Services.Coupons
         Task<ResultWrapperDto<Coupon>> CreateAsync(CreateCouponRequest request);
         Task<ResultWrapperDto<Coupon>> UpdateAsync(UpdateCouponRequest request);
         Task<ResultWrapperDto<Coupon>> DeleteAsync(DeleteCouponRequest request);
+
+        bool IsValidCoupon(Coupon coupon);
     }
 }

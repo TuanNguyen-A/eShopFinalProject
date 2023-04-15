@@ -12,7 +12,7 @@ using eShopFinalProject.Data.EF;
 namespace eShopFinalProject.Data.Migrations
 {
     [DbContext(typeof(eShopDbContext))]
-    [Migration("20230413135450_init")]
+    [Migration("20230415131741_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "0803125e-38aa-4f0a-a940-9bc2d1926f53",
+                            ConcurrencyStamp = "eadd62dc-24eb-424b-a358-38cbc530c5dd",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -59,7 +59,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("200d51fd-eae5-4951-9734-f4538c85947d"),
-                            ConcurrencyStamp = "ad1e353d-958a-4dd3-9f9a-4e3a9dd57a34",
+                            ConcurrencyStamp = "5f458e59-d1ad-4b95-8b1a-37dd5c1bb2d1",
                             Description = "Seller role",
                             Name = "seller",
                             NormalizedName = "SELLER"
@@ -67,7 +67,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"),
-                            ConcurrencyStamp = "88fbbadb-017e-4caa-b9b5-ff96b047b123",
+                            ConcurrencyStamp = "8fe5674e-710f-41a4-b416-7cef12f9bbd0",
                             Description = "User role",
                             Name = "user",
                             NormalizedName = "USER"
@@ -158,11 +158,11 @@ namespace eShopFinalProject.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            Id = new Guid("1306725c-0eeb-401b-a25e-28dc0e2953ce"),
                             AccessFailedCount = 0,
                             Address = "Test Address",
                             Avatar = "TestURL",
-                            ConcurrencyStamp = "e68820b6-9650-4f98-9e00-5012668c3a92",
+                            ConcurrencyStamp = "ef797424-2dc9-4dc9-8fc4-f3ff831023bf",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -171,13 +171,36 @@ namespace eShopFinalProject.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGiXWZ2N5wFxMM1vHJJKjdRKmYL9ut3GDJsQmibIcLiikIRtYg4s2o0DsIaHiAV1zQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBLCblUOnteKu8I0HcqqWmycIHVhSolKyYQl4s6H3eWHBvn9tBIl4C99xwi8Ku3o6g==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "admin@gmail.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            AccessFailedCount = 0,
+                            Address = "Test Address",
+                            Avatar = "TestURL",
+                            ConcurrencyStamp = "b1ffd9cb-f118-4e83-aa3a-a0e4a892aed8",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "user@gmail.com",
+                            EmailConfirmed = true,
+                            FullName = "Tuan Nguyen",
+                            IsBlock = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "user@gmail.com",
+                            NormalizedUserName = "user@gmail.com",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGvAFOFkYSqQGqx7AMYlgLD1VPbzlW7qWxn3LvNzZ7hm3ZhAyCS5RsDdX+IdFlBatQ==",
+                            PhoneNumber = "123456",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserName = "user@gmail.com"
                         });
                 });
 
@@ -458,6 +481,9 @@ namespace eShopFinalProject.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CouponId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Total")
                         .HasColumnType("int");
 
@@ -473,6 +499,8 @@ namespace eShopFinalProject.Data.Migrations
                         .HasDefaultValue(0);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CouponId");
 
                     b.HasIndex("UserId");
 
@@ -746,8 +774,13 @@ namespace eShopFinalProject.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            UserId = new Guid("1306725c-0eeb-401b-a25e-28dc0e2953ce"),
                             RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc")
+                        },
+                        new
+                        {
+                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
+                            RoleId = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc")
                         });
                 });
 
@@ -818,11 +851,17 @@ namespace eShopFinalProject.Data.Migrations
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Order", b =>
                 {
+                    b.HasOne("eShopFinalProject.Data.Entities.Coupon", "Coupon")
+                        .WithMany("Orders")
+                        .HasForeignKey("CouponId");
+
                     b.HasOne("eShopFinalProject.Data.Entities.AppUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Coupon");
 
                     b.Navigation("User");
                 });
@@ -959,6 +998,11 @@ namespace eShopFinalProject.Data.Migrations
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Color", b =>
                 {
                     b.Navigation("ProductInColors");
+                });
+
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.Coupon", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("eShopFinalProject.Data.Entities.Order", b =>

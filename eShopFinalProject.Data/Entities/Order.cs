@@ -12,11 +12,13 @@ namespace eShopFinalProject.Data.Entities
         public int Id { get; set; }
         public OrderStatus orderStatus { get; set; }
         public Guid UserId { get; set; }
+        public int CouponId { get; set; }
         public int Total { get; set; }
         public int TotalAfterDiscount { get; set; }
 
         //Relationship
         public virtual AppUser User { get; set; }
+        public virtual Coupon Coupon { get; set; } 
         public virtual List<ProductInOrder> ProductInOrders { get; set; }
     }
 }

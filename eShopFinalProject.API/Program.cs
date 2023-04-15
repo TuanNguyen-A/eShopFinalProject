@@ -28,6 +28,7 @@ using Microsoft.Extensions.Configuration;
 using eShopFinalProject.Services.Mails;
 using eShopFinalProject.Services.Images;
 using eShopFinalProject.Services.Carts;
+using eShopFinalProject.Services.Orders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -98,6 +99,7 @@ builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddTransient<ICartService, CartService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
 
 builder.Services.AddTransient<IAppRoleRepository, AppRoleRepository>();
 builder.Services.AddTransient<IAppUserRepository, AppUserRepository>();
