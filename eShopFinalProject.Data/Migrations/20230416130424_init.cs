@@ -285,7 +285,7 @@ namespace eShopFinalProject.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    orderStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    OrderStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CouponId = table.Column<int>(type: "int", nullable: false),
                     Total = table.Column<int>(type: "int", nullable: false),
@@ -437,9 +437,9 @@ namespace eShopFinalProject.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("200d51fd-eae5-4951-9734-f4538c85947d"), "5f458e59-d1ad-4b95-8b1a-37dd5c1bb2d1", "Seller role", "seller", "SELLER" },
-                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "8fe5674e-710f-41a4-b416-7cef12f9bbd0", "User role", "user", "USER" },
-                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "eadd62dc-24eb-424b-a358-38cbc530c5dd", "Administrator role", "admin", "ADMIN" }
+                    { new Guid("200d51fd-eae5-4951-9734-f4538c85947d"), "d6d3e12e-4ad5-406f-bd59-86f048c5b908", "Seller role", "seller", "SELLER" },
+                    { new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"), "14f8a8d4-5390-4a37-9802-adb641cf13f5", "User role", "user", "USER" },
+                    { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "c1f94d7e-263f-4d21-a7f4-cdd1cf866a6d", "Administrator role", "admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -456,8 +456,8 @@ namespace eShopFinalProject.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "Avatar", "ConcurrencyStamp", "CreatedDate", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UpdatedDate", "UserName", "ZipCode" },
                 values: new object[,]
                 {
-                    { new Guid("1306725c-0eeb-401b-a25e-28dc0e2953ce"), 0, "Test Address", "TestURL", "ef797424-2dc9-4dc9-8fc4-f3ff831023bf", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Tuan Nguyen", false, null, "admin@gmail.com", "admin@gmail.com", "AQAAAAEAACcQAAAAEBLCblUOnteKu8I0HcqqWmycIHVhSolKyYQl4s6H3eWHBvn9tBIl4C99xwi8Ku3o6g==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", null },
-                    { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "TestURL", "b1ffd9cb-f118-4e83-aa3a-a0e4a892aed8", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user@gmail.com", true, "Tuan Nguyen", false, null, "user@gmail.com", "user@gmail.com", "AQAAAAEAACcQAAAAEGvAFOFkYSqQGqx7AMYlgLD1VPbzlW7qWxn3LvNzZ7hm3ZhAyCS5RsDdX+IdFlBatQ==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user@gmail.com", null }
+                    { new Guid("1306725c-0eeb-401b-a25e-28dc0e2953ce"), 0, "Test Address", "TestURL", "f5e094d7-b6fc-4f1a-8bb6-05555933086f", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", true, "Tuan Nguyen", false, null, "admin@gmail.com", "admin@gmail.com", "AQAAAAEAACcQAAAAEDnBgFVeuP+dHBgSrlW79LkxaKza3xzphwjJBVgxObFMD0Rk1Bdv7spAQAfWW21eRQ==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", null },
+                    { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "Test Address", "TestURL", "dcfa2d25-2267-4606-af4b-47bba70ae698", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user@gmail.com", true, "Tuan Nguyen", false, null, "user@gmail.com", "user@gmail.com", "AQAAAAEAACcQAAAAEDJuPSs5sRHgZpOzi9mbnyVBCwbkIpE5R4Tjzzw2JNSoxnr0lFXvdfD+vhihhKy14Q==", "123456", false, "", false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user@gmail.com", null }
                 });
 
             migrationBuilder.InsertData(

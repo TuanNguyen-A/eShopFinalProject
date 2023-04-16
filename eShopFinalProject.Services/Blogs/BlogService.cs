@@ -161,8 +161,8 @@ namespace eShopFinalProject.Services.Blogs
         {
             try
             {
-                var foundEntity = await _blogRepository.GetAsync(request.Id);
-                if (foundEntity == null)
+                var blog = await _blogRepository.GetAsync(request.Id);
+                if (blog == null)
                 {
                     return new ResultWrapperDto<Blog>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Blog));
                 }
@@ -173,15 +173,24 @@ namespace eShopFinalProject.Services.Blogs
                     return new ResultWrapperDto<Blog>(400, String.Format(Resource.NotFound_Template, Resource.Resource_Category));
                 }
 
-                var user = await _userManager.FindByIdAsync(request.UserId);
-                if (user == null)
+                //Validate Image
+                List<Image> imageList = new List<Image>() { };
+                foreach (string publicId in request.Images)
                 {
-                    return new ResultWrapperDto<Blog>(400, String.Format(Resource.NotFound_Template, Resource.Resource_User));
+                    var image = await _imageRepository.FindAsync(x => x.PublicId == publicId);
+                    if (!image.Any())
+                    {
+                        return new ResultWrapperDto<Blog>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Image));
+                    }
+
+                    imageList.Add(image.FirstOrDefault());
                 }
 
-                foundEntity.Title = request.Title;
-                foundEntity.Description = request.Description;
-                var result = _blogRepository.Update(foundEntity);
+                blog.Title = request.Title;
+                blog.Description = request.Description;
+                blog.Images = imageList;
+
+                var result = _blogRepository.Update(blog);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Blog>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_Blog));
             }
