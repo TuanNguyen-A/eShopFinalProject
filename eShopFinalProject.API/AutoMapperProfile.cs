@@ -7,6 +7,7 @@ using eShopFinalProject.Utilities.ViewModel.Categories;
 using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.ViewModel.Coupons;
 using eShopFinalProject.Utilities.ViewModel.Enqs;
+using eShopFinalProject.Utilities.ViewModel.Orders;
 using eShopFinalProject.Utilities.ViewModel.Products;
 using eShopFinalProject.Utilities.ViewModel.Uploads;
 using eShopFinalProject.Utilities.ViewModel.Users;
@@ -56,6 +57,9 @@ namespace eShopFinalProject.API
 
             CreateMap<ProductInCart, ProductInCartVM>();
 
+            CreateMap<Order, OrderVM>();
+
+            CreateMap<ProductInOrder, ProductInOrderVM>();
         }
     }
 }

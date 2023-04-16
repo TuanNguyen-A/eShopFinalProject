@@ -49,7 +49,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "eadd62dc-24eb-424b-a358-38cbc530c5dd",
+                            ConcurrencyStamp = "c1f94d7e-263f-4d21-a7f4-cdd1cf866a6d",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -57,7 +57,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("200d51fd-eae5-4951-9734-f4538c85947d"),
-                            ConcurrencyStamp = "5f458e59-d1ad-4b95-8b1a-37dd5c1bb2d1",
+                            ConcurrencyStamp = "d6d3e12e-4ad5-406f-bd59-86f048c5b908",
                             Description = "Seller role",
                             Name = "seller",
                             NormalizedName = "SELLER"
@@ -65,7 +65,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"),
-                            ConcurrencyStamp = "8fe5674e-710f-41a4-b416-7cef12f9bbd0",
+                            ConcurrencyStamp = "14f8a8d4-5390-4a37-9802-adb641cf13f5",
                             Description = "User role",
                             Name = "user",
                             NormalizedName = "USER"
@@ -160,7 +160,7 @@ namespace eShopFinalProject.Data.Migrations
                             AccessFailedCount = 0,
                             Address = "Test Address",
                             Avatar = "TestURL",
-                            ConcurrencyStamp = "ef797424-2dc9-4dc9-8fc4-f3ff831023bf",
+                            ConcurrencyStamp = "f5e094d7-b6fc-4f1a-8bb6-05555933086f",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -169,7 +169,7 @@ namespace eShopFinalProject.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBLCblUOnteKu8I0HcqqWmycIHVhSolKyYQl4s6H3eWHBvn9tBIl4C99xwi8Ku3o6g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDnBgFVeuP+dHBgSrlW79LkxaKza3xzphwjJBVgxObFMD0Rk1Bdv7spAQAfWW21eRQ==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -183,7 +183,7 @@ namespace eShopFinalProject.Data.Migrations
                             AccessFailedCount = 0,
                             Address = "Test Address",
                             Avatar = "TestURL",
-                            ConcurrencyStamp = "b1ffd9cb-f118-4e83-aa3a-a0e4a892aed8",
+                            ConcurrencyStamp = "dcfa2d25-2267-4606-af4b-47bba70ae698",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "user@gmail.com",
                             EmailConfirmed = true,
@@ -192,7 +192,7 @@ namespace eShopFinalProject.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "user@gmail.com",
                             NormalizedUserName = "user@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGvAFOFkYSqQGqx7AMYlgLD1VPbzlW7qWxn3LvNzZ7hm3ZhAyCS5RsDdX+IdFlBatQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDJuPSs5sRHgZpOzi9mbnyVBCwbkIpE5R4Tjzzw2JNSoxnr0lFXvdfD+vhihhKy14Q==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -482,6 +482,11 @@ namespace eShopFinalProject.Data.Migrations
                     b.Property<int>("CouponId")
                         .HasColumnType("int");
 
+                    b.Property<int>("OrderStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<int>("Total")
                         .HasColumnType("int");
 
@@ -490,11 +495,6 @@ namespace eShopFinalProject.Data.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("orderStatus")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
 
                     b.HasKey("Id");
 

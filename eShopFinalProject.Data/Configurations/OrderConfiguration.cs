@@ -16,7 +16,7 @@ namespace eShopFinalProject.Data.Configurations
         {
             builder.ToTable("Orders");
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.orderStatus).HasDefaultValue(OrderStatus.NotProcessed);
+            builder.Property(x => x.OrderStatus).HasDefaultValue(OrderStatus.NotProcessed);
 
             builder.HasOne(x => x.User).WithMany(u => u.Orders).HasForeignKey(o => o.UserId);
             builder.HasOne(x => x.Coupon).WithMany(c => c.Orders).HasForeignKey(o => o.CouponId).IsRequired(false);

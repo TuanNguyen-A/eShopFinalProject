@@ -13,6 +13,11 @@ using eShopFinalProject.Utilities.Resources;
 using eShopFinalProject.Utilities.ViewModel.Users;
 using Microsoft.AspNetCore.Identity;
 using eShopFinalProject.Services.Coupons;
+using eShopFinalProject.Utilities.ViewModel.Page;
+using eShopFinalProject.Utilities.ViewModel.Brands;
+using eShopFinalProject.Utilities.ViewModel.Blogs;
+using eShopFinalProject.Data.Enums;
+using Microsoft.AspNetCore.Components;
 
 namespace eShopFinalProject.Services.Orders
 {
@@ -101,12 +106,113 @@ namespace eShopFinalProject.Services.Orders
                 };
 
                 await _orderRepository.AddAsync(order);
+                _cartRepository.Delete(cart);
                 await _unitOfWork.SaveChangesAsync();
                 return new ResultWrapperDto<Order>(201, String.Format(Resource.Create_Succes_Template, Resource.Resource_Order));
             }
             catch(Exception ex)
             {
                 throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Create, Resource.Resource_Order));
+            }
+        }
+
+        public async Task<ResultWrapperDto<PagingResult<OrderVM>>> GetAllAsync(PagingGetAllRequest req)
+        {
+            try
+            {
+                var listItem = await _orderRepository.AllAsync();
+
+                if (!string.IsNullOrEmpty(req.Search))
+                {
+                    listItem = listItem.Where(x => x.User.NormalizedEmail.Contains(req.Search)).ToList();
+                }
+
+                var listPagingItem = listItem
+                    .Skip((req.PageIndex - 1) * req.PageSize)
+                    .Take(req.PageSize)
+                    .ToList();
+
+                var listVMItem = _mapper.Map<List<Order>, List<OrderVM>>(listPagingItem);
+
+                var result = new PagingResult<OrderVM>
+                {
+                    pageIndex = req.PageIndex,
+                    pageSize = req.PageSize,
+                    totalPage = (int)Math.Ceiling((double)listItem.Count / req.PageSize),
+                    totalItem = listItem.Count,
+                    items = listVMItem
+                };
+                return new ResultWrapperDto<PagingResult<OrderVM>>(result);
+            }
+            catch (Exception)
+            {
+                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Get, Resource.Resource_Brand));
+            }
+        }
+
+        public async Task<ResultWrapperDto<OrderVM>> GetAsync(int id)
+        {
+            try
+            {
+                var entity = await _orderRepository.GetAsync(id);
+                if (entity == null)
+                {
+                    return new ResultWrapperDto<OrderVM>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Order));
+                }
+                var result = _mapper.Map<OrderVM>(entity);
+                return new ResultWrapperDto<OrderVM>(result);
+            }
+            catch (Exception)
+            {
+                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Get, Resource.Resource_Blog));
+            }
+        }
+
+        public async Task<ResultWrapperDto<Order>> UpdateStatus(UpdateOrderRequest request)
+        {
+            try
+            {
+                var order = await _orderRepository.GetAsync(request.OrderID);
+                if (order == null)
+                {
+                    return new ResultWrapperDto<Order>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Order));
+                }
+
+                
+                switch (request.OrderStatus)
+                {
+                    case "NotProcessed":
+                        order.OrderStatus = OrderStatus.NotProcessed;
+                        break;
+
+                    case "Processing":
+                        order.OrderStatus = OrderStatus.Processing;
+                        break;
+
+                    case "Dispatched":
+                        order.OrderStatus = OrderStatus.Dispatched;
+                        break;
+
+                    case "Cancelled":
+                        order.OrderStatus = OrderStatus.Cancelled;
+                        break;
+
+                    case "CashOnDelivery":
+                        order.OrderStatus = OrderStatus.CashOnDelivery;
+                        break;
+
+                    case "Delivered":
+                        order.OrderStatus = OrderStatus.Delivered;
+                        break;
+                }
+
+                var result = _orderRepository.Update(order);
+                await _unitOfWork.SaveChangesAsync();
+                return new ResultWrapperDto<Order>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_Order));
+            }
+            catch (Exception)
+            {
+                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Update, Resource.Resource_Order));
             }
         }
     }
