@@ -79,6 +79,15 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Wishlist.
+        /// </summary>
+        public static string Action_Add_WishList {
+            get {
+                return ResourceManager.GetString("Action_Add_WishList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating.
         /// </summary>
         public static string Action_Create {
@@ -106,6 +115,24 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Get Wishlist.
+        /// </summary>
+        public static string Action_Get_WishList {
+            get {
+                return ResourceManager.GetString("Action_Get_WishList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rating.
+        /// </summary>
+        public static string Action_Rating {
+            get {
+                return ResourceManager.GetString("Action_Rating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Updating.
         /// </summary>
         public static string Action_Update {
@@ -120,6 +147,15 @@ namespace eShopFinalProject.Utilities.Resources {
         public static string ActionFail_Template {
             get {
                 return ResourceManager.GetString("ActionFail_Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1} Is Success.
+        /// </summary>
+        public static string ActionSuccess_Template {
+            get {
+                return ResourceManager.GetString("ActionSuccess_Template", resourceCulture);
             }
         }
         
@@ -246,6 +282,15 @@ namespace eShopFinalProject.Utilities.Resources {
         public static string NotFound_Template {
             get {
                 return ResourceManager.GetString("NotFound_Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product is alredy in wishlist.
+        /// </summary>
+        public static string Product_Already_In_Wishlist {
+            get {
+                return ResourceManager.GetString("Product_Already_In_Wishlist", resourceCulture);
             }
         }
         

@@ -39,6 +39,7 @@ namespace eShopFinalProject.Data.EF
             builder.ApplyConfiguration(new EnqConfiguration());
             builder.ApplyConfiguration(new ImageConfiguration());
             builder.ApplyConfiguration(new CartConfiguration());
+            builder.ApplyConfiguration(new ProductInWishConfiguration());
 
             //Identity
             builder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
@@ -64,5 +65,6 @@ namespace eShopFinalProject.Data.EF
         public DbSet<ProductInOrder> ProductInOrders { get; set; }
         public DbSet<ProductInCart> ProductInCarts { get; set; }
         public DbSet<ProductRating> ProductRatings { get; set; }
+        public DbSet<ProductInWish> ProductInWishes { get; set; }
     }
 }

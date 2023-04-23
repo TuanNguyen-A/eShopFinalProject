@@ -29,6 +29,8 @@ namespace eShopFinalProject.Data.Infrastructure
                 .Include(i => i.Images)
                 .Include(i => i.ProductInColors)
                 .ThenInclude(pic => pic.Color)
+                .Include(i => i.ProductRatings)
+                .ThenInclude(i => i.User)
                 .ToListAsync();
         }
 
@@ -40,6 +42,8 @@ namespace eShopFinalProject.Data.Infrastructure
                 .Include(i => i.Images)
                 .Include(i => i.ProductInColors)
                 .ThenInclude(pic => pic.Color)
+                .Include(i => i.ProductRatings)
+                .ThenInclude(i => i.User)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
     }

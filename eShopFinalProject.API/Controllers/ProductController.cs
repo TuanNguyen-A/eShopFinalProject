@@ -1,5 +1,6 @@
 ﻿using eShopFinalProject.Services.Colors;
 using eShopFinalProject.Services.Products;
+using eShopFinalProject.Utilities.Common;
 using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.ViewModel.Page;
 using eShopFinalProject.Utilities.ViewModel.Products;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace eShopFinalProject.API.Controllers
 {
@@ -65,5 +68,42 @@ namespace eShopFinalProject.API.Controllers
             return StatusCode(result.StatusCode, result.Message);
         }
 
+        [HttpPut("rating")]
+        [Authorize]
+        public async Task<IActionResult> RatingProduct([FromBody] RatingProductRequest req, [FromHeader(Name = "Authorization")] string authorization)
+        {
+            JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
+            object email;
+            jwtToken.Payload.TryGetValue(ClaimTypes.Email, out email);
+
+            var result = await _productService.RatingProduct(req, (string)email);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [HttpPost("add-wishlist")]
+        [Authorize]
+        public async Task<IActionResult> AddWishList([FromBody] AddWishListProductRequest req, [FromHeader(Name = "Authorization")] string authorization)
+        {
+            JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
+            object email;
+            jwtToken.Payload.TryGetValue(ClaimTypes.Email, out email);
+
+            var result = await _productService.AddWishList(req, (string)email);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [HttpGet("get-wishlist")]
+        [Authorize]
+        public async Task<IActionResult> GetWishList([FromHeader(Name = "Authorization")] string authorization)
+        {
+            JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
+            object email;
+            jwtToken.Payload.TryGetValue(ClaimTypes.Email, out email);
+
+            var result = await _productService.GetWishList((string)email);
+            return result.StatusCode != 200 ?
+                StatusCode(result.StatusCode, result.Message) :
+                Ok(result.Dto);
+        }
     }
 }

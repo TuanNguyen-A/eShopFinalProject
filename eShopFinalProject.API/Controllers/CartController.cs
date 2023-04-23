@@ -27,7 +27,7 @@ namespace eShopFinalProject.API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Add([FromBody] CreateCartRequest request, [FromHeader(Name = "Authorization")] string authorization)
+        public async Task<IActionResult> CreateOrUpdate([FromBody] CreateCartRequest request, [FromHeader(Name = "Authorization")] string authorization)
         {
             JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
             object email;

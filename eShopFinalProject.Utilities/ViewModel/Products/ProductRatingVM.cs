@@ -1,21 +1,19 @@
-﻿using System;
+﻿using eShopFinalProject.Utilities.ViewModel.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eShopFinalProject.Data.Entities
+namespace eShopFinalProject.Utilities.ViewModel.Products
 {
-    public class ProductRating
+    public class ProductRatingVM
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
         public Guid UserId { get; set; }
         public int Star { get; set; }
         public string Comment { get; set; }
-
-        //
-        public virtual Product Product { get; set; }
-        public virtual AppUser User { get; set; }
+        public ProductVM Product { get; set; }
+        public UserVM User { get; set; }
     }
 }

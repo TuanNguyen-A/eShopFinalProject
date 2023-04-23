@@ -29,6 +29,7 @@ namespace eShopFinalProject.Data.Entities
         public virtual List<ProductInCart> ProductInCarts { get; set; }
         public virtual List<ProductInColor> ProductInColors { get; set; }
         public virtual List<ProductRating> ProductRatings { get; set; }
+        public virtual List<ProductInWish> ProductInWishes { get; set; }
         public virtual List<Image> Images { get; set; }
 
     }

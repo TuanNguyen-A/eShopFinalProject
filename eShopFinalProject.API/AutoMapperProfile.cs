@@ -47,6 +47,9 @@ namespace eShopFinalProject.API
                 .ForMember(dest => dest.Colors, 
                 source => source.MapFrom(source=> source.ProductInColors.Select(pic => pic.Color).ToList()));
 
+            CreateMap<ProductRating, ProductRatingVM>();
+            CreateMap<ProductRating, ProductRatingForProductVM>();
+
             CreateMap<CreateUserRequest, AppUser>();
             CreateMap<AppUser, UserVM>();
 
