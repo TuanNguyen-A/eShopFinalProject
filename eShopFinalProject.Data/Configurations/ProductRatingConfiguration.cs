@@ -14,7 +14,9 @@ namespace eShopFinalProject.Data.Configurations
         public void Configure(EntityTypeBuilder<ProductRating> builder)
         {
             builder.ToTable("ProductRatings");
-            builder.HasKey(t => new { t.UserId, t.ProductId });
+            builder.HasKey(t => t.Id);
+            builder.Property(t => t.UserId).IsRequired();
+            builder.Property(t => t.ProductId).IsRequired();
 
             builder.HasOne(x => x.Product).WithMany(p => p.ProductRatings).HasForeignKey(pic => pic.ProductId);
             builder.HasOne(x => x.User).WithMany(p => p.ProductRatings).HasForeignKey(pic => pic.UserId);

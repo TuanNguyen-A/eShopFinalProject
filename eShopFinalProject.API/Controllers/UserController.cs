@@ -30,7 +30,7 @@ namespace eShopFinalProject.API.Controllers
         // POST: api/Users
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateUser([FromForm] CreateUserRequest request)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
         {
             var result = await _userService.CreateAsync(request, AppConstants.Role.User);
             return StatusCode(result.StatusCode, result.Message);
@@ -38,7 +38,7 @@ namespace eShopFinalProject.API.Controllers
 
         [HttpPost("create-shop")]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateSeller([FromForm] CreateUserRequest request)
+        public async Task<IActionResult> CreateSeller([FromBody] CreateUserRequest request)
         {
             var result = await _userService.CreateAsync(request, AppConstants.Role.Seller);
             return StatusCode(result.StatusCode, result.Message);
@@ -54,7 +54,7 @@ namespace eShopFinalProject.API.Controllers
 
         [HttpPost("admin")]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateAdmin([FromForm] CreateUserRequest request)
+        public async Task<IActionResult> CreateAdmin([FromBody] CreateUserRequest request)
         {
             var result = await _userService.CreateAsync(request, AppConstants.Role.Admin);
             return StatusCode(result.StatusCode, result.Message);

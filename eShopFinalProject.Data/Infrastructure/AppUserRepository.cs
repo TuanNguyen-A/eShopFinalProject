@@ -24,7 +24,7 @@ namespace eShopFinalProject.Data.Infrastructure
 
         public List<UserVM> AllUserVMAsync()
         {
-            var result = from u in _context.Users
+            var result = (from u in _context.Users
                          join ur in _context.UserRoles on u.Id equals ur.UserId
                          join r in _context.Roles on ur.RoleId equals r.Id
                          select new UserVM()
@@ -36,8 +36,8 @@ namespace eShopFinalProject.Data.Infrastructure
                              PhoneNumber = u.PhoneNumber,
                              Role = r.Name,
                              IsBlock = u.IsBlock
-                         };
-            return result.ToList();
+                         }).ToList();
+            return result;
         }
     }
 }

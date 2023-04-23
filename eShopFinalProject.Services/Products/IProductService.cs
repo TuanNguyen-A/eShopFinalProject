@@ -18,5 +18,8 @@ namespace eShopFinalProject.Services.Products
         Task<ResultWrapperDto<Product>> CreateAsync(CreateProductRequest request);
         Task<ResultWrapperDto<Product>> UpdateAsync(UpdateProductRequest request);
         Task<ResultWrapperDto<Product>> DeleteAsync(DeleteProductRequest request);
+        Task<ResultWrapperDto<Product>> RatingProduct(RatingProductRequest req, string email);
+        Task<ResultWrapperDto<Product>> AddWishList(AddWishListProductRequest req, string? email);
+        Task<ResultWrapperDto<List<ProductVM>>> GetWishList( string? email);
     }
 }

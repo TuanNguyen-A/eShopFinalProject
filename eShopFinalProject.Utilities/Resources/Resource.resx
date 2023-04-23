@@ -123,8 +123,14 @@
   <data name="ActionFail_Template" xml:space="preserve">
     <value>{0} {1} Is Failed</value>
   </data>
+  <data name="ActionSuccess_Template" xml:space="preserve">
+    <value>{0} {1} Is Success</value>
+  </data>
   <data name="Action_Activate" xml:space="preserve">
     <value>Activating</value>
+  </data>
+  <data name="Action_Add_WishList" xml:space="preserve">
+    <value>Add Wishlist</value>
   </data>
   <data name="Action_Create" xml:space="preserve">
     <value>Creating</value>
@@ -134,6 +140,12 @@
   </data>
   <data name="Action_Get" xml:space="preserve">
     <value>Getting</value>
+  </data>
+  <data name="Action_Get_WishList" xml:space="preserve">
+    <value>Get Wishlist</value>
+  </data>
+  <data name="Action_Rating" xml:space="preserve">
+    <value>Rating</value>
   </data>
   <data name="Action_Update" xml:space="preserve">
     <value>Updating</value>
@@ -179,6 +191,9 @@
   </data>
   <data name="NotFound_Template" xml:space="preserve">
     <value>{0} is not found</value>
+  </data>
+  <data name="Product_Already_In_Wishlist" xml:space="preserve">
+    <value>Product is alredy in wishlist</value>
   </data>
   <data name="Product_Existed" xml:space="preserve">
     <value>Product's name is already in use</value>

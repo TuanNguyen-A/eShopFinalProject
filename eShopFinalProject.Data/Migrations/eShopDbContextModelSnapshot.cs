@@ -49,7 +49,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "c1f94d7e-263f-4d21-a7f4-cdd1cf866a6d",
+                            ConcurrencyStamp = "82aaecca-746c-494e-9cde-735c00ba988d",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "ADMIN"
@@ -57,7 +57,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("200d51fd-eae5-4951-9734-f4538c85947d"),
-                            ConcurrencyStamp = "d6d3e12e-4ad5-406f-bd59-86f048c5b908",
+                            ConcurrencyStamp = "8357b97e-418a-4b3a-bb69-39a81846297e",
                             Description = "Seller role",
                             Name = "seller",
                             NormalizedName = "SELLER"
@@ -65,7 +65,7 @@ namespace eShopFinalProject.Data.Migrations
                         new
                         {
                             Id = new Guid("870c9cb7-e482-4204-9cc0-e69347b043cc"),
-                            ConcurrencyStamp = "14f8a8d4-5390-4a37-9802-adb641cf13f5",
+                            ConcurrencyStamp = "7de21ae7-9035-4949-8f27-7ed26970f1be",
                             Description = "User role",
                             Name = "user",
                             NormalizedName = "USER"
@@ -82,10 +82,6 @@ namespace eShopFinalProject.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Avatar")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -146,9 +142,6 @@ namespace eShopFinalProject.Data.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ZipCode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers", (string)null);
@@ -159,8 +152,7 @@ namespace eShopFinalProject.Data.Migrations
                             Id = new Guid("1306725c-0eeb-401b-a25e-28dc0e2953ce"),
                             AccessFailedCount = 0,
                             Address = "Test Address",
-                            Avatar = "TestURL",
-                            ConcurrencyStamp = "f5e094d7-b6fc-4f1a-8bb6-05555933086f",
+                            ConcurrencyStamp = "09e04d2e-c480-4c96-9cdc-1f69d284a924",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
@@ -169,7 +161,7 @@ namespace eShopFinalProject.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@gmail.com",
                             NormalizedUserName = "admin@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDnBgFVeuP+dHBgSrlW79LkxaKza3xzphwjJBVgxObFMD0Rk1Bdv7spAQAfWW21eRQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH41yrBPrYVOeoC4e0IS4VufBY2x5tjE2J97wUfTY2ryxjiXjD9+bFyVeAzUno5sEQ==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -182,8 +174,7 @@ namespace eShopFinalProject.Data.Migrations
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
                             Address = "Test Address",
-                            Avatar = "TestURL",
-                            ConcurrencyStamp = "dcfa2d25-2267-4606-af4b-47bba70ae698",
+                            ConcurrencyStamp = "3bdd5395-fefd-482d-a8fd-b0ffdca1e9ca",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "user@gmail.com",
                             EmailConfirmed = true,
@@ -192,7 +183,7 @@ namespace eShopFinalProject.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "user@gmail.com",
                             NormalizedUserName = "user@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDJuPSs5sRHgZpOzi9mbnyVBCwbkIpE5R4Tjzzw2JNSoxnr0lFXvdfD+vhihhKy14Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFHkURY2YddgPl1y5WmaxZ+c3n/oaJ+1+sQIlPXdq0fzpeNkH48xlEK3tpwqsP92Pg==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -655,7 +646,7 @@ namespace eShopFinalProject.Data.Migrations
                     b.ToTable("ProductInOrders", (string)null);
                 });
 
-            modelBuilder.Entity("eShopFinalProject.Data.Entities.ProductRating", b =>
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.ProductInWish", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -663,33 +654,58 @@ namespace eShopFinalProject.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.HasKey("UserId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductInWishes", (string)null);
+                });
+
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.ProductRating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Star")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "ProductId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ProductRatings", (string)null);
 
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            ProductId = 1,
+                            Id = 1,
                             Comment = "Great",
-                            Star = 5
+                            ProductId = 1,
+                            Star = 5,
+                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de")
                         },
                         new
                         {
-                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            ProductId = 2,
+                            Id = 2,
                             Comment = "Nice",
-                            Star = 4
+                            ProductId = 2,
+                            Star = 4,
+                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de")
                         });
                 });
 
@@ -940,6 +956,25 @@ namespace eShopFinalProject.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("eShopFinalProject.Data.Entities.ProductInWish", b =>
+                {
+                    b.HasOne("eShopFinalProject.Data.Entities.Product", "Product")
+                        .WithMany("ProductInWishes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eShopFinalProject.Data.Entities.AppUser", "User")
+                        .WithMany("ProductInWishes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("eShopFinalProject.Data.Entities.ProductRating", b =>
                 {
                     b.HasOne("eShopFinalProject.Data.Entities.Product", "Product")
@@ -967,6 +1002,8 @@ namespace eShopFinalProject.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Orders");
+
+                    b.Navigation("ProductInWishes");
 
                     b.Navigation("ProductRatings");
                 });
@@ -1017,6 +1054,8 @@ namespace eShopFinalProject.Data.Migrations
                     b.Navigation("ProductInColors");
 
                     b.Navigation("ProductInOrders");
+
+                    b.Navigation("ProductInWishes");
 
                     b.Navigation("ProductRatings");
                 });

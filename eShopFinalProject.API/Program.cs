@@ -113,6 +113,7 @@ builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddTransient<IProductInColorRepository, ProductInColorRepository>();
 builder.Services.AddTransient<IProductInOrderRepository, ProductInOrderRepository>();
 builder.Services.AddTransient<IProductInCartRepository, ProductInCartRepository>();
+builder.Services.AddTransient<IProductInWishRepository, ProductInWishRepository>();
 builder.Services.AddTransient<IProductRatingRepository, ProductRatingRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IEnqRepository, EnqRepository>();

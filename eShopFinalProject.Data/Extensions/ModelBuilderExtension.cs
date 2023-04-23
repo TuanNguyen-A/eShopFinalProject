@@ -60,7 +60,6 @@ namespace eShopFinalProject.Data.Extensions
                 SecurityStamp = string.Empty,
                 FullName = "Tuan Nguyen",
                 PhoneNumber = "123456",
-                Avatar = "TestURL",
             },
             new AppUser
             {
@@ -75,7 +74,6 @@ namespace eShopFinalProject.Data.Extensions
                 SecurityStamp = string.Empty,
                 FullName = "Tuan Nguyen",
                 PhoneNumber = "123456",
-                Avatar = "TestURL",
             });
 
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
@@ -206,6 +204,7 @@ namespace eShopFinalProject.Data.Extensions
             modelBuilder.Entity<ProductRating>().HasData(
                 new ProductRating()
                 {
+                    Id = 1,
                     ProductId = 1,
                     UserId = userId,
                     Star = 5,
@@ -213,6 +212,7 @@ namespace eShopFinalProject.Data.Extensions
                 },
                 new ProductRating()
                 {
+                    Id = 2,
                     ProductId = 2,
                     UserId = userId,
                     Star = 4,

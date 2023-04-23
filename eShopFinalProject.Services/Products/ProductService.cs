@@ -7,6 +7,8 @@ using eShopFinalProject.Utilities.Resources;
 using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.ViewModel.Page;
 using eShopFinalProject.Utilities.ViewModel.Products;
+using eShopFinalProject.Utilities.ViewModel.Users;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,8 @@ namespace eShopFinalProject.Services.Products
         private readonly IColorRepository _colorRepository;
         private readonly IImageRepository _imageRepository;
         private readonly IProductInColorRepository _productInColorRepository;
+        private readonly IProductInWishRepository _productInWishRepository;
+        private readonly UserManager<AppUser> _userManager;
 
         public ProductService(
             IUnitOfWork unitOfWork,
@@ -33,7 +37,9 @@ namespace eShopFinalProject.Services.Products
             ICategoryRepository categoryRepository,
             IColorRepository colorRepository,
             IProductInColorRepository productInColorRepository,
+            IProductInWishRepository productInWishRepository,
             IImageRepository imageRepository,
+            UserManager<AppUser> userManager,
             IMapper mapper
             )
         {
@@ -43,7 +49,8 @@ namespace eShopFinalProject.Services.Products
             _productRepository = productRepository;
             _imageRepository = imageRepository;
             _productInColorRepository = productInColorRepository;
-
+            _productInWishRepository = productInWishRepository;
+            _userManager = userManager;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -241,6 +248,99 @@ namespace eShopFinalProject.Services.Products
             catch (Exception)
             {
                 throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Delete, Resource.Resource_Product));
+            }
+        }
+
+        public async Task<ResultWrapperDto<Product>> RatingProduct(RatingProductRequest req, string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_User));
+                }
+
+                var product = await _productRepository.GetAsync(req.ProductId);
+                if (product == null)
+                {
+                    return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Product));
+                }
+
+                product.ProductRatings.Add(new ProductRating()
+                {
+                    User = user,
+                    Product = product,
+                    Star = req.Star,
+                    Comment = req.Comment
+                });
+
+                _productRepository.Update(product);
+                await _unitOfWork.SaveChangesAsync();
+                return new ResultWrapperDto<Product>(200, String.Format(Resource.Update_Succes_Template, Resource.Resource_Product));
+            }
+            catch (Exception)
+            {
+                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Rating, Resource.Resource_Product));
+            }
+        }
+
+        public async Task<ResultWrapperDto<Product>> AddWishList(AddWishListProductRequest req, string? email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_User));
+                }
+
+                var product = await _productRepository.GetAsync(req.ProductId);
+                if (product == null)
+                {
+                    return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Product));
+                }
+
+                var wishList = await _productInWishRepository.GetWishListByUserId(user.Id);
+
+                if (wishList.Contains(product))
+                {
+                    return new ResultWrapperDto<Product>(400, String.Format(Resource.Product_Already_In_Wishlist));
+                }
+
+                await _productInWishRepository.AddAsync(new ProductInWish()
+                {
+                    Product = product,
+                    User = user
+                });
+
+                await _unitOfWork.SaveChangesAsync();
+                return new ResultWrapperDto<Product>(200, String.Format(Resource.ActionSuccess_Template, Resource.Action_Add_WishList, Resource.Resource_Product));
+            }
+            catch (Exception)
+            {
+                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Add_WishList, Resource.Resource_Product));
+            }
+        }
+
+        public async Task<ResultWrapperDto<List<ProductVM>>> GetWishList(string? email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    return new ResultWrapperDto<List<ProductVM>>(404, String.Format(Resource.NotFound_Template, Resource.Resource_User));
+                }
+
+                var wishList = await _productInWishRepository.GetWishListByUserId(user.Id);
+
+                var result = _mapper.Map<List<Product>, List<ProductVM>>(wishList);
+                return new ResultWrapperDto<List<ProductVM>>(result);
+            }
+            catch (Exception)
+            {
+                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Get_WishList, Resource.Resource_Product));
             }
         }
     }

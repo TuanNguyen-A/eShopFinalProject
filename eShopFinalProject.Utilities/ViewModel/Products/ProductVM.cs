@@ -2,6 +2,7 @@
 using eShopFinalProject.Utilities.ViewModel.Categories;
 using eShopFinalProject.Utilities.ViewModel.Colors;
 using eShopFinalProject.Utilities.ViewModel.Uploads;
+using eShopFinalProject.Utilities.ViewModel.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +26,13 @@ namespace eShopFinalProject.Utilities.ViewModel.Products
         public BrandVM Brand { get; set; }
         public CategoryVM Category { get; set; }
         public List<ImageVM> Images { get; set; }
+        public virtual List<ProductRatingForProductVM> ProductRatings { get; set; }
+    }
+
+    public class ProductRatingForProductVM
+    {
+        public int Star { get; set; }
+        public string Comment { get; set; }
+        public UserVM User { get; set; }
     }
 }

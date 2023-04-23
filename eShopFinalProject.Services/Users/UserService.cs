@@ -32,6 +32,7 @@ namespace eShopFinalProject.Services.Users
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
         private readonly IAppUserRepository _appUserRepository;
+        private readonly IProductInWishRepository _productInWishRepository;
         private readonly IMailService _mailService;
         private readonly IImageService _imageService;
 
@@ -40,6 +41,7 @@ namespace eShopFinalProject.Services.Users
             SignInManager<AppUser> signInManager,
             RoleManager<AppRole> roleManager,
             IAppUserRepository appUserRepository,
+            IProductInWishRepository productInWishRepository,
             IConfiguration config,
             IUnitOfWork unitOfWork,
             IMailService mailService,
@@ -51,6 +53,7 @@ namespace eShopFinalProject.Services.Users
             _signInManager = signInManager;
             _roleManager = roleManager;
             _appUserRepository = appUserRepository;
+            _productInWishRepository = productInWishRepository;
             _mailService = mailService;
             _imageService = imageService;
             _config = config;
@@ -73,12 +76,6 @@ namespace eShopFinalProject.Services.Users
 
                 user.IsBlock = false;
                 user.UserName = user.Email;
-
-                if(request.AvatarImage != null)
-                {
-                    var uploadImageResponse = await _imageService.UploadImage(request.AvatarImage);
-                    user.Avatar = uploadImageResponse.Url;
-                }
 
                 await _userManager.CreateAsync(user, request.Password);
 
@@ -233,6 +230,7 @@ namespace eShopFinalProject.Services.Users
 
                 var result = _mapper.Map<UserVM>(entity);
                 result.Role = roles[0];
+                
                 return new ResultWrapperDto<UserVM>(result);
             }
             catch (Exception)
@@ -267,11 +265,6 @@ namespace eShopFinalProject.Services.Users
                 }
 
                 if (request.PhoneNumber != null)
-                {
-                    foundEntity.PhoneNumber = request.PhoneNumber;
-                }
-
-                if (request.ZipCode != null)
                 {
                     foundEntity.PhoneNumber = request.PhoneNumber;
                 }
