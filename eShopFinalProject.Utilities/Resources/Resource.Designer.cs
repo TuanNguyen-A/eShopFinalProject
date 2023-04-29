@@ -178,6 +178,24 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add product to cart failed.
+        /// </summary>
+        public static string Add_Product_Cart_Fail {
+            get {
+                return ResourceManager.GetString("Add_Product_Cart_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add product to cart successfully.
+        /// </summary>
+        public static string Add_Product_Cart_Success {
+            get {
+                return ResourceManager.GetString("Add_Product_Cart_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Brand is already in use.
         /// </summary>
         public static string Brand_Existed {
@@ -304,6 +322,33 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The product does not exist in the cart.
+        /// </summary>
+        public static string Product_In_Cart_Not_Exist {
+            get {
+                return ResourceManager.GetString("Product_In_Cart_Not_Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove product to cart failed.
+        /// </summary>
+        public static string Remove_Product_Cart_Fail {
+            get {
+                return ResourceManager.GetString("Remove_Product_Cart_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove product to cart successfully.
+        /// </summary>
+        public static string Remove_Product_Cart_Success {
+            get {
+                return ResourceManager.GetString("Remove_Product_Cart_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blog.
         /// </summary>
         public static string Resource_Blog {
@@ -426,6 +471,24 @@ namespace eShopFinalProject.Utilities.Resources {
         public static string Signout_Success {
             get {
                 return ResourceManager.GetString("Signout_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update product to cart failed.
+        /// </summary>
+        public static string Update_Product_Cart_Fail {
+            get {
+                return ResourceManager.GetString("Update_Product_Cart_Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update product to cart successfully.
+        /// </summary>
+        public static string Update_Product_Cart_Success {
+            get {
+                return ResourceManager.GetString("Update_Product_Cart_Success", resourceCulture);
             }
         }
         

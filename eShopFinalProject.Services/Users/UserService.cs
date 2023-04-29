@@ -118,7 +118,7 @@ namespace eShopFinalProject.Services.Users
             {
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                var confirmationLink = $"{_config.GetSection("FrontendURL").Value}/activation/{HttpUtility.UrlEncode(token)}";
+                var confirmationLink = $"{_config.GetSection("FrontendURL").Value}/activation?email={user.Email}&token={HttpUtility.UrlEncode(token)}";
                 var message = new MailRequest()
                 {
                     ToEmail= user.Email,

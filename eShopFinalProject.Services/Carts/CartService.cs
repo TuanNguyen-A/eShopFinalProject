@@ -43,6 +43,58 @@ namespace eShopFinalProject.Services.Carts
             _cartRepository = cartRepository;
             _mapper = mapper;
         }
+
+        public async Task<ResultWrapperDto<Cart>> AddProductToCart(AddCartRequest request, string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+
+                //Check if cart exists 
+                var carts = await _cartRepository.FindAsync(x => x.UserId == user.Id);
+                Cart cart = carts.FirstOrDefault();
+                if (cart == null)
+                {
+                    cart = new Cart()
+                    {
+                        User = user,
+                        ProductInCarts = new List<ProductInCart>()
+                        {
+                            new ProductInCart()
+                            {
+                                ProductId = request.ProductId,
+                                Quantity = request.Quantity
+                            }
+                        }
+                    };
+                    await _cartRepository.AddAsync(cart);
+                }
+                else
+                {
+                    var entity = cart.ProductInCarts.FirstOrDefault(p => p.ProductId == request.ProductId);
+                    if(entity == null)
+                    {
+                        cart.ProductInCarts.Add(new ProductInCart()
+                        {
+                            ProductId = request.ProductId,
+                            Quantity = request.Quantity
+                        });
+                    }
+                    else
+                    {
+                        entity.Quantity += request.Quantity;
+                    }
+                    _cartRepository.Update(cart);
+                }
+                await _unitOfWork.SaveChangesAsync();
+                return new ResultWrapperDto<Cart>(200, Resource.Add_Product_Cart_Success);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(Resource.Add_Product_Cart_Fail);
+            }
+        }
+
         public async Task<ResultWrapperDto<Cart>> CreateOrUpdate(CreateCartRequest request, string email)
         {
             try
@@ -115,6 +167,56 @@ namespace eShopFinalProject.Services.Carts
             catch (Exception ex)
             {
                 throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Get, Resource.Resource_Cart));
+            }
+        }
+
+        public async Task<ResultWrapperDto<Cart>> RemoveProductFromCart(RemoveProductRequest request, string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                var carts = await _cartRepository.FindAsync(x => x.UserId == user.Id);
+                Cart cart = carts.FirstOrDefault();
+                if(cart == null)
+                    return new ResultWrapperDto<Cart>(404, Resource.Product_In_Cart_Not_Exist);
+
+                var pic = cart.ProductInCarts.FirstOrDefault(x => x.ProductId == request.ProductId);
+                if (pic == null)
+                    return new ResultWrapperDto<Cart>(404, Resource.Product_In_Cart_Not_Exist);
+
+                cart.ProductInCarts.Remove(pic);
+                _cartRepository.Update(cart);
+                await _unitOfWork.SaveChangesAsync();
+                return new ResultWrapperDto<Cart>(200, Resource.Remove_Product_Cart_Success);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(Resource.Remove_Product_Cart_Fail);
+            }
+        }
+
+        public async Task<ResultWrapperDto<Cart>> UpdateProductFromCart(AddCartRequest request, string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                var carts = await _cartRepository.FindAsync(x => x.UserId == user.Id);
+                Cart cart = carts.FirstOrDefault();
+                if (cart == null)
+                    return new ResultWrapperDto<Cart>(404, Resource.Product_In_Cart_Not_Exist);
+
+                var pic = cart.ProductInCarts.FirstOrDefault(x => x.ProductId == request.ProductId);
+                if (pic == null)
+                    return new ResultWrapperDto<Cart>(404, Resource.Product_In_Cart_Not_Exist);
+
+                pic.Quantity = request.Quantity;
+                _cartRepository.Update(cart);
+                await _unitOfWork.SaveChangesAsync();
+                return new ResultWrapperDto<Cart>(200, Resource.Update_Product_Cart_Success);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(Resource.Update_Product_Cart_Fail);
             }
         }
     }

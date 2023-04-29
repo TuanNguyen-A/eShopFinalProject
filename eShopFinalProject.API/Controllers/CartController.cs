@@ -25,14 +25,36 @@ namespace eShopFinalProject.API.Controllers
             _cartService = cartService;
         }
 
-        [HttpPost]
+        [HttpPost("add-product-to-cart")]
         [Authorize]
-        public async Task<IActionResult> CreateOrUpdate([FromBody] CreateCartRequest request, [FromHeader(Name = "Authorization")] string authorization)
+        public async Task<IActionResult> AddProduct([FromBody] AddCartRequest request, [FromHeader(Name = "Authorization")] string authorization)
         {
             JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
             object email;
             jwtToken.Payload.TryGetValue(ClaimTypes.Email, out email);
-            var result = await _cartService.CreateOrUpdate(request, (string)email);
+            var result = await _cartService.AddProductToCart(request, (string)email);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [HttpDelete("remove-product-from-cart")]
+        [Authorize]
+        public async Task<IActionResult> RemoveProduct([FromBody] RemoveProductRequest request, [FromHeader(Name = "Authorization")] string authorization)
+        {
+            JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
+            object email;
+            jwtToken.Payload.TryGetValue(ClaimTypes.Email, out email);
+            var result = await _cartService.RemoveProductFromCart(request, (string)email);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [HttpPut("update-product-from-cart")]
+        [Authorize]
+        public async Task<IActionResult> UpdateProduct([FromBody] AddCartRequest request, [FromHeader(Name = "Authorization")] string authorization)
+        {
+            JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
+            object email;
+            jwtToken.Payload.TryGetValue(ClaimTypes.Email, out email);
+            var result = await _cartService.UpdateProductFromCart(request, (string)email);
             return StatusCode(result.StatusCode, result.Message);
         }
 
