@@ -21,5 +21,6 @@ namespace eShopFinalProject.Services.Products
         Task<ResultWrapperDto<Product>> RatingProduct(RatingProductRequest req, string email);
         Task<ResultWrapperDto<Product>> AddWishList(AddWishListProductRequest req, string? email);
         Task<ResultWrapperDto<List<ProductVM>>> GetWishList( string? email);
+        Task<ResultWrapperDto<Product>> RemoveProductFromWishList(DeleteProductRequest req, string email);
     }
 }

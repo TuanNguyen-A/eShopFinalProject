@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Asn1.Ocsp;
+using Org.BouncyCastle.Ocsp;
 using System.Runtime.Versioning;
 using System.Web;
 
@@ -126,6 +127,51 @@ namespace eShopFinalProject.Services.Users
                     Body = $"This is activation link for your account: {confirmationLink}"
                 };
                 await _mailService.SendEmailAsync(message);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResultWrapperDto<AppUser>> SendResetPasswordConfirmMail(string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if(user == null)
+                    return new ResultWrapperDto<AppUser>(404, String.Format(Resource.NotFound_Template, Resource.Resource_User));
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                var confirmationLink = $"{_config.GetSection("FrontendURL").Value}/confirm?email={user.Email}&token={HttpUtility.UrlEncode(token)}";
+                var message = new MailRequest()
+                {
+                    ToEmail = user.Email,
+                    Subject = "Confirm Reset Password",
+                    Body = $"This is reset password confirmation link for your account: {confirmationLink}"
+                };
+                await _mailService.SendEmailAsync(message);
+                return new ResultWrapperDto<AppUser>(200, "Success");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResultWrapperDto<AppUser>> ResetPassword(ResetPasswordRequest request)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(request.Email);
+                if (user == null)
+                    return new ResultWrapperDto<AppUser>(404, String.Format(Resource.NotFound_Template, Resource.Resource_User));
+
+                var result = await _userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(request.Token), request.NewPassword);
+                if(!result.Succeeded)
+                    return new ResultWrapperDto<AppUser>(400, Resource.Reset_Password_Fail);
+
+                return new ResultWrapperDto<AppUser>(200, "Success");
             }
             catch (Exception)
             {

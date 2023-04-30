@@ -133,6 +133,15 @@ namespace eShopFinalProject.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove wishlist.
+        /// </summary>
+        public static string Action_Remove_WishList {
+            get {
+                return ResourceManager.GetString("Action_Remove_WishList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Updating.
         /// </summary>
         public static string Action_Update {
@@ -345,6 +354,15 @@ namespace eShopFinalProject.Utilities.Resources {
         public static string Remove_Product_Cart_Success {
             get {
                 return ResourceManager.GetString("Remove_Product_Cart_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Password is Failed.
+        /// </summary>
+        public static string Reset_Password_Fail {
+            get {
+                return ResourceManager.GetString("Reset_Password_Fail", resourceCulture);
             }
         }
         

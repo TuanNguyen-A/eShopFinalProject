@@ -8,6 +8,6 @@ namespace eShopFinalProject.Utilities.ViewModel.Products
 {
     public class DeleteProductRequest
     {
-        public int Id { get; set; }
+        public int ProductId { get; set; }
     }
 }

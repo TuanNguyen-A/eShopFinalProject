@@ -235,7 +235,7 @@ namespace eShopFinalProject.Services.Products
         {
             try
             {
-                var entity = await _productRepository.GetAsync(request.Id);
+                var entity = await _productRepository.GetAsync(request.ProductId);
                 if (entity == null)
                 {
                     return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Product));
@@ -341,6 +341,29 @@ namespace eShopFinalProject.Services.Products
             catch (Exception)
             {
                 throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Get_WishList, Resource.Resource_Product));
+            }
+        }
+
+        public async Task<ResultWrapperDto<Product>> RemoveProductFromWishList(DeleteProductRequest req, string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+
+                var list = await _productInWishRepository.FindAsync(x => x.UserId == user.Id && x.ProductId == req.ProductId);
+                if (!list.Any())
+                {
+                    return new ResultWrapperDto<Product>(404, String.Format(Resource.NotFound_Template, Resource.Resource_Product));
+                }
+
+                _productInWishRepository.Delete(list.First());
+
+                await _unitOfWork.SaveChangesAsync();
+                return new ResultWrapperDto<Product>(200, String.Format(Resource.ActionSuccess_Template, Resource.Action_Remove_WishList, Resource.Resource_Product));
+            }
+            catch (Exception)
+            {
+                throw new Exception(String.Format(Resource.ActionFail_Template, Resource.Action_Remove_WishList, Resource.Resource_Product));
             }
         }
     }
