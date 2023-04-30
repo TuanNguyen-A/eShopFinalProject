@@ -22,5 +22,7 @@ namespace eShopFinalProject.Services.Users
         Task<ResultWrapperDto<AppUser>> BlockOrUnblockUser(string id, bool isBlock);
         Task<ResultWrapperDto<AppUser>> ActivateUser(ActiveRequest request);
         Task<ResultWrapperDto<AppUser>> Signout(string email);
+        Task<ResultWrapperDto<AppUser>> SendResetPasswordConfirmMail(string email);
+        Task<ResultWrapperDto<AppUser>> ResetPassword(ResetPasswordRequest request);
     }
 }

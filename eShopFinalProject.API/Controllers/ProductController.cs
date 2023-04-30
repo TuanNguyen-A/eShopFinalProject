@@ -105,5 +105,17 @@ namespace eShopFinalProject.API.Controllers
                 StatusCode(result.StatusCode, result.Message) :
                 Ok(result.Dto);
         }
+
+        [HttpDelete("remove-product-from-wishlist")]
+        [Authorize]
+        public async Task<IActionResult> RemoveProductWishList([FromBody] DeleteProductRequest req, [FromHeader(Name = "Authorization")] string authorization)
+        {
+            JwtSecurityToken jwtToken = ApplicationUtils.ReadJwtToken(authorization);
+            object email;
+            jwtToken.Payload.TryGetValue(ClaimTypes.Email, out email);
+
+            var result = await _productService.RemoveProductFromWishList(req, (string)email);
+            return StatusCode(result.StatusCode, result.Message);
+        }
     }
 }

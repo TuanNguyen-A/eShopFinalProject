@@ -52,6 +52,22 @@ namespace eShopFinalProject.API.Controllers
             return StatusCode(result.StatusCode, result.Message);
         }
 
+        [HttpPost("confirm-reset-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmResetPassword([FromBody] ConfirmResetPasswordRequest req)
+        {
+            var result = await _userService.SendResetPasswordConfirmMail(req.Email);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
+        [HttpPost("reset-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            var result = await _userService.ResetPassword(request);
+            return StatusCode(result.StatusCode, result.Message);
+        }
+
         [HttpPost("admin")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateAdmin([FromBody] CreateUserRequest request)

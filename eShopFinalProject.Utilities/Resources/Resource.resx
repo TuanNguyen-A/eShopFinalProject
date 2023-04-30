@@ -147,6 +147,9 @@
   <data name="Action_Rating" xml:space="preserve">
     <value>Rating</value>
   </data>
+  <data name="Action_Remove_WishList" xml:space="preserve">
+    <value>Remove wishlist</value>
+  </data>
   <data name="Action_Update" xml:space="preserve">
     <value>Updating</value>
   </data>
@@ -212,6 +215,9 @@
   </data>
   <data name="Remove_Product_Cart_Success" xml:space="preserve">
     <value>Remove product to cart successfully</value>
+  </data>
+  <data name="Reset_Password_Fail" xml:space="preserve">
+    <value>Reset Password is Failed</value>
   </data>
   <data name="Resource_Blog" xml:space="preserve">
     <value>Blog</value>
